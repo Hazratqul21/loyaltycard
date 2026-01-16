@@ -1,0 +1,2 @@
+# loyaltycard
+loyalik cartasi
