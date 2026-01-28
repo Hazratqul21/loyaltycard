@@ -1,0 +1,14 @@
+{
+  "appName": "LoyaltyCard",
+  "home": "Bosh sahifa",
+  "wallet": "Hamyon",
+  "scanner": "Skaner",
+  "rewards": "Sovg'alar",
+  "analytics": "Statistika",
+  "settings": "Sozlamalar",
+  "totalPoints": "Jami ballar",
+  "activeCards": "Faol kartalar",
+  "recentTransactions": "Oxirgi tranzaksiyalar",
+  "viewAll": "Hammasini ko'rish",
+  "merchantMode": "Sotuvchi rejimi"
+}

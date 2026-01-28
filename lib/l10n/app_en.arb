@@ -1,0 +1,14 @@
+{
+  "appName": "LoyaltyCard",
+  "home": "Home",
+  "wallet": "Wallet",
+  "scanner": "Scanner",
+  "rewards": "Rewards",
+  "analytics": "Analytics",
+  "settings": "Settings",
+  "totalPoints": "Total Points",
+  "activeCards": "Active Cards",
+  "recentTransactions": "Recent Transactions",
+  "viewAll": "View All",
+  "merchantMode": "Merchant Mode"
+}

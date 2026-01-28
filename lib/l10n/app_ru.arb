@@ -1,0 +1,14 @@
+{
+  "appName": "LoyaltyCard",
+  "home": "Главная",
+  "wallet": "Кошелек",
+  "scanner": "Сканер",
+  "rewards": "Награды",
+  "analytics": "Статистика",
+  "settings": "Настройки",
+  "totalPoints": "Всего баллов",
+  "activeCards": "Активные карты",
+  "recentTransactions": "Последние транзакции",
+  "viewAll": "Посмотреть все",
+  "merchantMode": "Режим продавца"
+}
