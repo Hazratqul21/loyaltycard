@@ -13,6 +13,7 @@ import '../../../core/constants/app_sizes.dart';
 import '../../../core/constants/app_strings.dart';
 import '../../../core/utils/extensions.dart';
 import '../../providers/cards_provider.dart';
+import '../../providers/analytics_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
 import '../../../core/services/pdf_service.dart';
 import '../../providers/auth_provider.dart';
@@ -138,7 +139,10 @@ class AnalyticsScreen extends ConsumerWidget {
                 icon: FontAwesomeIcons.arrowTrendUp,
                 title: 'Bu oy yig\'ildi',
                 value: '+${summary.earnedThisMonth.formatted}',
-                gradientColors: [AppColors.success, AppColors.success.withOpacity(0.7)],
+                gradientColors: [
+                  AppColors.success,
+                  AppColors.success.withValues(alpha: 0.7)
+                ],
               ),
             ),
             const SizedBox(width: AppSizes.paddingMD),
@@ -148,7 +152,10 @@ class AnalyticsScreen extends ConsumerWidget {
                 icon: FontAwesomeIcons.arrowTrendDown,
                 title: 'Bu oy sarflandi',
                 value: '-${summary.spentThisMonth.formatted}',
-                gradientColors: [AppColors.error, AppColors.error.withOpacity(0.7)],
+                gradientColors: [
+                  AppColors.error,
+                  AppColors.error.withValues(alpha: 0.7)
+                ],
               ),
             ),
           ],
@@ -209,7 +216,7 @@ class AnalyticsScreen extends ConsumerWidget {
             FaIcon(
               FontAwesomeIcons.chartColumn,
               size: 48,
-              color: context.colorScheme.primary.withOpacity(0.3),
+              color: context.colorScheme.primary.withValues(alpha: 0.3),
             ),
             const SizedBox(height: AppSizes.paddingMD),
             Text(
@@ -238,7 +245,7 @@ class AnalyticsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 10,
             offset: const Offset(0, 2),
           ),
@@ -250,7 +257,7 @@ class AnalyticsScreen extends ConsumerWidget {
           maxY: maxValue * 1.2,
           barTouchData: BarTouchData(
             touchTooltipData: BarTouchTooltipData(
-              getTooltipColor: (_) => AppColors.primaryColor,
+              tooltipBgColor: AppColors.primaryColor,
               tooltipRoundedRadius: 8,
               getTooltipItem: (group, groupIndex, rod, rodIndex) {
                 return BarTooltipItem(
@@ -321,7 +328,7 @@ class AnalyticsScreen extends ConsumerWidget {
             horizontalInterval: maxValue / 4,
             getDrawingHorizontalLine: (value) {
               return FlLine(
-                color: Theme.of(context).dividerColor.withOpacity(0.3),
+                color: Theme.of(context).dividerColor.withValues(alpha: 0.3),
                 strokeWidth: 1,
                 dashArray: [5, 5],
               );
@@ -337,9 +344,11 @@ class AnalyticsScreen extends ConsumerWidget {
                     begin: Alignment.bottomCenter,
                     end: Alignment.topCenter,
                     colors: [
-                      AppColors.cardColors[entry.value.colorIndex % AppColors.cardColors.length],
-                      AppColors.cardColors[entry.value.colorIndex % AppColors.cardColors.length]
-                          .withOpacity(0.7),
+                      AppColors.cardColors[
+                          entry.value.colorIndex % AppColors.cardColors.length],
+                      AppColors.cardColors[entry.value.colorIndex %
+                              AppColors.cardColors.length]
+                          .withValues(alpha: 0.7),
                     ],
                   ),
                   width: 24,
@@ -382,7 +391,7 @@ class AnalyticsScreen extends ConsumerWidget {
               borderRadius: BorderRadius.circular(AppSizes.radiusMD),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
+                  color: Colors.black.withValues(alpha: 0.03),
                   blurRadius: 5,
                   offset: const Offset(0, 2),
                 ),
@@ -395,8 +404,9 @@ class AnalyticsScreen extends ConsumerWidget {
                   width: 32,
                   height: 32,
                   decoration: BoxDecoration(
-                    color: AppColors.cardColors[item.colorIndex % AppColors.cardColors.length]
-                        .withOpacity(0.2),
+                    color: AppColors.cardColors[
+                            item.colorIndex % AppColors.cardColors.length]
+                        .withValues(alpha: 0.2),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Center(
@@ -404,7 +414,8 @@ class AnalyticsScreen extends ConsumerWidget {
                       '${index + 1}',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
-                        color: AppColors.cardColors[item.colorIndex % AppColors.cardColors.length],
+                        color: AppColors.cardColors[
+                            item.colorIndex % AppColors.cardColors.length],
                       ),
                     ),
                   ),
@@ -450,13 +461,15 @@ class AnalyticsScreen extends ConsumerWidget {
   /// PDF eksport qilish
   Future<void> _exportPdf(BuildContext context, WidgetRef ref) async {
     final authState = ref.read(authProvider);
+    final user = authState.value;
     final transactions = ref.read(transactionsProvider).transactions;
 
-    if (!authState.isAuthenticated) return;
+    if (user == null) return;
 
     if (transactions.isEmpty) {
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Eksport qilish uchun tranzaksiyalar yo\'q')),
+        const SnackBar(
+            content: Text('Eksport qilish uchun tranzaksiyalar yo\'q')),
       );
       return;
     }
@@ -469,7 +482,7 @@ class AnalyticsScreen extends ConsumerWidget {
       );
 
       await ref.read(pdfServiceProvider).exportTransactionsPdf(
-            user: authState.user!,
+            user: user,
             transactions: transactions,
           );
 

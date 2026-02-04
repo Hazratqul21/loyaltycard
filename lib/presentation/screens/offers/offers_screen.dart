@@ -12,6 +12,7 @@ import '../../../core/constants/app_sizes.dart';
 import '../../providers/offers_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
+import '../../../core/utils/extensions.dart';
 
 class OffersScreen extends ConsumerWidget {
   const OffersScreen({super.key});
@@ -31,9 +32,9 @@ class OffersScreen extends ConsumerWidget {
         children: [
           // Tier badge header
           if (user != null) _buildTierInfo(context, user.tier),
-          
+
           Expanded(
-            child: offers.isEmpty 
+            child: offers.isEmpty
                 ? _buildEmptyState(context)
                 : ListView.builder(
                     padding: const EdgeInsets.all(AppSizes.paddingMD),
@@ -92,7 +93,8 @@ class OffersScreen extends ConsumerWidget {
             Stack(
               children: [
                 ClipRRect(
-                  borderRadius: const BorderRadius.vertical(top: Radius.circular(AppSizes.radiusLG)),
+                  borderRadius: const BorderRadius.vertical(
+                      top: Radius.circular(AppSizes.radiusLG)),
                   child: Image.network(
                     offer.imageUrl,
                     height: 160,
@@ -101,7 +103,8 @@ class OffersScreen extends ConsumerWidget {
                     errorBuilder: (context, error, stackTrace) => Container(
                       height: 160,
                       color: Colors.grey.shade200,
-                      child: const Center(child: Icon(Icons.image_not_supported)),
+                      child:
+                          const Center(child: Icon(Icons.image_not_supported)),
                     ),
                   ),
                 ),
@@ -109,13 +112,14 @@ class OffersScreen extends ConsumerWidget {
                   top: 12,
                   right: 12,
                   child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+                    padding:
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                     decoration: BoxDecoration(
                       color: AppColors.primaryColor,
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Text(
-                      offer.discountPercentage != null 
+                      offer.discountPercentage != null
                           ? '-${offer.discountPercentage}%'
                           : '+${offer.bonusPoints} ball',
                       style: const TextStyle(
@@ -128,7 +132,7 @@ class OffersScreen extends ConsumerWidget {
                 ),
               ],
             ),
-            
+
             Padding(
               padding: const EdgeInsets.all(AppSizes.paddingMD),
               child: Column(
@@ -147,7 +151,8 @@ class OffersScreen extends ConsumerWidget {
                       ),
                       Text(
                         'Amal qilish muddati: ${_formatDate(offer.expiresAt)}',
-                        style: TextStyle(fontSize: 11, color: Colors.grey.shade500),
+                        style: TextStyle(
+                            fontSize: 11, color: Colors.grey.shade500),
                       ),
                     ],
                   ),
@@ -208,19 +213,27 @@ class OffersScreen extends ConsumerWidget {
 
   IconData _getTierIcon(String tier) {
     switch (tier.toLowerCase()) {
-      case 'gold': return FontAwesomeIcons.medal;
-      case 'silver': return FontAwesomeIcons.award;
-      case 'platinum': return FontAwesomeIcons.crown;
-      default: return FontAwesomeIcons.star;
+      case 'gold':
+        return FontAwesomeIcons.medal;
+      case 'silver':
+        return FontAwesomeIcons.award;
+      case 'platinum':
+        return FontAwesomeIcons.crown;
+      default:
+        return FontAwesomeIcons.star;
     }
   }
 
   Color _getTierColor(String tier) {
     switch (tier.toLowerCase()) {
-      case 'gold': return const Color(0xFFFFD700);
-      case 'silver': return const Color(0xFFC0C0C0);
-      case 'platinum': return const Color(0xFF6B4EE6); // Custom platinum purple
-      default: return const Color(0xFFCD7F32);
+      case 'gold':
+        return const Color(0xFFFFD700);
+      case 'silver':
+        return const Color(0xFFC0C0C0);
+      case 'platinum':
+        return const Color(0xFF6B4EE6); // Custom platinum purple
+      default:
+        return const Color(0xFFCD7F32);
     }
   }
 }

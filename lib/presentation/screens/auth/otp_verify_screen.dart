@@ -59,18 +59,19 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
   Future<void> _verifyOtp() async {
     if (_otpController.text.length < 6) return;
 
-    final success = await ref.read(authProvider.notifier).signInWithPhoneCode(
-      verificationId: widget.verificationId,
-      smsCode: _otpController.text,
-    );
+    final success =
+        await ref.read(authNotifierProvider.notifier).signInWithPhoneCode(
+              verificationId: widget.verificationId,
+              smsCode: _otpController.text,
+            );
 
-    if (success) {
+    if (success.isSuccess) {
       if (mounted) Navigator.popUntil(context, (route) => route.isFirst);
     } else {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Kod noto\'g\'ri kiritildi'),
+          SnackBar(
+            content: Text(success.errorMessage ?? 'Kod noto\'g\'ri kiritildi'),
             backgroundColor: AppColors.error,
           ),
         );
@@ -80,7 +81,7 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final authState = ref.watch(authProvider);
+    final authState = ref.watch(authNotifierProvider);
 
     return Scaffold(
       body: Container(
@@ -97,7 +98,8 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                  icon:
+                      const Icon(Icons.arrow_back_ios_new, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
@@ -138,7 +140,6 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
                         ),
                       ),
                       const SizedBox(height: AppSizes.paddingXXL),
-                      
                       GlassmorphicCard(
                         padding: const EdgeInsets.symmetric(
                           vertical: AppSizes.paddingMD,
@@ -167,19 +168,18 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
                         ),
                       ),
                       const SizedBox(height: AppSizes.paddingXXL),
-                      
                       GradientButton.primary(
                         text: 'Tasdiqlash',
-                        isLoading: authState.status == AuthStatus.loading,
+                        isLoading: authState.isLoading,
                         onPressed: _verifyOtp,
                         width: double.infinity,
                       ),
                       const SizedBox(height: AppSizes.paddingLG),
-                      
                       _timerSeconds > 0
                           ? Text(
                               'Qayta yuborish: ${_timerSeconds}s',
-                              style: TextStyle(color: Colors.white.withOpacity(0.5)),
+                              style: TextStyle(
+                                  color: Colors.white.withOpacity(0.5)),
                             )
                           : TextButton(
                               onPressed: () {

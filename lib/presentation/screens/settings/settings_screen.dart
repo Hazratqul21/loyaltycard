@@ -9,14 +9,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
-import '../../../core/services/sync_service.dart';
-import '../../providers/locale_provider.dart';
+import '../../../core/utils/extensions.dart';
 import '../../providers/auth_provider.dart';
-import '../../providers/cards_provider.dart';
 import '../../providers/theme_provider.dart';
 import '../../providers/merchant_provider.dart';
-import '../../providers/social_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
+import '../../../domain/entities/user.dart';
+import '../../providers/locale_provider.dart';
+import '../../providers/cards_provider.dart';
+import '../../providers/sync_provider.dart';
+import '../../providers/connectivity_provider.dart';
+import '../../../core/services/connectivity_service.dart';
 import '../auth/login_screen.dart';
 import '../../../core/services/referral_service.dart';
 
@@ -38,6 +41,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final authState = ref.watch(authProvider);
+    final user = authState.value;
+    final isAuthenticated = user != null;
+
     final themeMode = ref.watch(themeModeProvider);
     final connectivityStatus = ref.watch(connectivityStatusProvider);
 
@@ -70,12 +76,12 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Sync status banner
-            if (authState.isAuthenticated) _buildSyncStatusBanner(),
+            if (isAuthenticated) _buildSyncStatusBanner(),
 
             // Profil bo'limi
-            if (authState.isAuthenticated) ...[
+            if (isAuthenticated) ...[
               _buildSectionTitle('Profil'),
-              _buildProfileCard(authState.user!),
+              _buildProfileCard(user),
               const SizedBox(height: AppSizes.paddingLG),
             ],
 
@@ -85,7 +91,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: AppSizes.paddingLG),
 
             // Sinxronizatsiya
-            if (authState.isAuthenticated) ...[
+            if (isAuthenticated) ...[
               _buildSectionTitle('Ma\'lumotlar'),
               _buildSyncSettings(),
               const SizedBox(height: AppSizes.paddingLG),
@@ -93,7 +99,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
 
             // Hisob boshqaruvi
             _buildSectionTitle('Sodiqlik'),
-            _buildReferralSection(authState.user!),
+            _buildReferralSection(user!),
             const SizedBox(height: AppSizes.paddingLG),
 
             // Sotuvchi rejimi (Faqat test/demo uchun hamma ko'ra oladi, aslida role tekshiriladi)
@@ -114,7 +120,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             const SizedBox(height: AppSizes.paddingXL),
 
             // Chiqish tugmasi
-            if (authState.isAuthenticated) _buildLogoutButton(),
+            if (isAuthenticated) _buildLogoutButton(),
 
             const SizedBox(height: 100),
           ],
@@ -229,30 +235,36 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       child: Text(
         title.toUpperCase(),
         style: Theme.of(context).textTheme.titleSmall?.copyWith(
-          color: AppColors.primaryColor,
-          fontWeight: FontWeight.bold,
-          letterSpacing: 1.2,
-        ),
+              color: AppColors.primaryColor,
+              fontWeight: FontWeight.bold,
+              letterSpacing: 1.2,
+            ),
       ),
     );
   }
 
   Widget _buildPremiumToggle(BuildContext context, WidgetRef ref) {
     return ListTile(
-      leading: const FaIcon(FontAwesomeIcons.crown, color: AppColors.warning, size: 20),
+      leading: const FaIcon(FontAwesomeIcons.crown,
+          color: AppColors.warning, size: 20),
       title: const Text('Premium Obuna'),
       subtitle: const Text('Eksklyuziv takliflar va yuqori ayirboshlash kursi'),
       trailing: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
-          color: AppColors.warning.withOpacity(0.1),
+          color: AppColors.warning.withValues(alpha: 0.1),
           borderRadius: BorderRadius.circular(8),
         ),
-        child: const Text('AKTIVLASHTIRISH', style: TextStyle(fontSize: 10, fontWeight: FontWeight.bold, color: AppColors.warning)),
+        child: const Text('AKTIVLASHTIRISH',
+            style: TextStyle(
+                fontSize: 10,
+                fontWeight: FontWeight.bold,
+                color: AppColors.warning)),
       ),
       onTap: () {
-         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Hozirda premium obuna qo\'shilmoqda...')),
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+              content: Text('Hozirda premium obuna qo\'shilmoqda...')),
         );
       },
     );
@@ -283,7 +295,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     );
   }
 
-
   /// Til sozlamalari
   Widget _buildLanguageSettings(WidgetRef ref) {
     final currentLocale = ref.watch(localeProvider);
@@ -295,28 +306,33 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
       child: Column(
         children: [
-          _buildLanguageTile(ref, 'uz', 'O\'zbekcha', '🇺🇿', currentLocale.languageCode == 'uz'),
+          _buildLanguageTile(ref, 'uz', 'O\'zbekcha', '🇺🇿',
+              currentLocale.languageCode == 'uz'),
           const Divider(height: 1),
-          _buildLanguageTile(ref, 'ru', 'Русский', '🇷🇺', currentLocale.languageCode == 'ru'),
+          _buildLanguageTile(
+              ref, 'ru', 'Русский', '🇷🇺', currentLocale.languageCode == 'ru'),
           const Divider(height: 1),
-          _buildLanguageTile(ref, 'en', 'English', '🇺🇸', currentLocale.languageCode == 'en'),
+          _buildLanguageTile(
+              ref, 'en', 'English', '🇺🇸', currentLocale.languageCode == 'en'),
         ],
       ),
     );
   }
 
-  Widget _buildLanguageTile(WidgetRef ref, String code, String name, String flag, bool isSelected) {
+  Widget _buildLanguageTile(
+      WidgetRef ref, String code, String name, String flag, bool isSelected) {
     return _buildSettingsTile(
-      icon: null, // We use flag instead
+      icon: Icons.language, // Fallback icon as null is not allowed
       title: name,
-      onTap: () => ref.read(localeProvider.notifier).setLocale(code),
+      onTap: () => ref.read(localeProvider.notifier).setLocale(Locale(code)),
       trailing: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
           Text(flag, style: const TextStyle(fontSize: 20)),
           const SizedBox(width: 12),
           if (isSelected)
-            const Icon(Icons.check_circle, color: AppColors.primaryColor, size: 20)
+            const Icon(Icons.check_circle,
+                color: AppColors.primaryColor, size: 20)
           else
             const Icon(Icons.circle_outlined, color: Colors.grey, size: 20),
         ],
@@ -325,7 +341,6 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   /// Sotuvchi rejimi switch (Deprecated, use _buildMerchantMode)
-
 
   /// Profil kartasi
   Widget _buildProfileCard(user) {
@@ -338,7 +353,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             children: [
               CircleAvatar(
                 radius: 30,
-                backgroundColor: Colors.white.withOpacity(0.2),
+                backgroundColor: Colors.white.withValues(alpha: 0.2),
                 backgroundImage:
                     user.photoUrl != null ? NetworkImage(user.photoUrl!) : null,
                 child: user.photoUrl == null
@@ -410,9 +425,9 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: _getTierColor(tier).withOpacity(0.3),
+        color: _getTierColor(tier).withValues(alpha: 0.3),
         borderRadius: BorderRadius.circular(4),
-        border: Border.all(color: _getTierColor(tier).withOpacity(0.5)),
+        border: Border.all(color: _getTierColor(tier).withValues(alpha: 0.5)),
       ),
       child: Text(
         tier.toUpperCase(),
@@ -429,20 +444,28 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   /// Tier Icon
   IconData _getTierIcon(String tier) {
     switch (tier.toLowerCase()) {
-      case 'gold': return FontAwesomeIcons.medal;
-      case 'silver': return FontAwesomeIcons.award;
-      case 'platinum': return FontAwesomeIcons.crown;
-      default: return FontAwesomeIcons.star;
+      case 'gold':
+        return FontAwesomeIcons.medal;
+      case 'silver':
+        return FontAwesomeIcons.award;
+      case 'platinum':
+        return FontAwesomeIcons.crown;
+      default:
+        return FontAwesomeIcons.star;
     }
   }
 
   /// Tier Color
   Color _getTierColor(String tier) {
     switch (tier.toLowerCase()) {
-      case 'gold': return const Color(0xFFFFD700);
-      case 'silver': return const Color(0xFFC0C0C0);
-      case 'platinum': return const Color(0xFFE5E4E2);
-      default: return const Color(0xFFCD7F32); // Bronze
+      case 'gold':
+        return const Color(0xFFFFD700);
+      case 'silver':
+        return const Color(0xFFC0C0C0);
+      case 'platinum':
+        return const Color(0xFFE5E4E2);
+      default:
+        return const Color(0xFFCD7F32); // Bronze
     }
   }
 
@@ -463,7 +486,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
             trailing: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
               decoration: BoxDecoration(
-                color: AppColors.primaryColor.withOpacity(0.1),
+                color: AppColors.primaryColor.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
@@ -477,12 +500,14 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
           ),
           const Divider(height: 1),
           StreamBuilder<int>(
-            stream: ref.read(referralServiceProvider).getReferralCount(user.uid),
+            stream:
+                ref.read(referralServiceProvider).getReferralCount(user.uid),
             builder: (context, snapshot) {
               return _buildSettingsTile(
                 icon: FontAwesomeIcons.users,
                 title: 'Takliflarim',
-                subtitle: '${snapshot.data ?? user.referralCount} ta do\'st taklif qilingan',
+                subtitle:
+                    '${snapshot.data ?? user.referralCount} ta do\'st taklif qilingan',
                 trailing: const Icon(Icons.chevron_right),
                 onTap: () {}, // Stats detail screen later
               );
@@ -585,7 +610,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
   }
 
   /// Hisob sozlamalari
-  Widget _buildAccountSettings(AuthState authState) {
+  Widget _buildAccountSettings(AsyncValue<AppUser?> authState) {
     return Container(
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
@@ -754,7 +779,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       confirmColor: AppColors.error,
       onConfirm: () async {
         Navigator.pop(context);
-        await ref.read(authProvider.notifier).signOut();
+        await ref.read(authNotifierProvider.notifier).signOut();
         Navigator.pop(context); // Close settings
       },
     );
@@ -811,7 +836,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
               Container(
                 padding: const EdgeInsets.all(AppSizes.paddingMD),
                 decoration: BoxDecoration(
-                  color: iconColor.withOpacity(0.2),
+                  color: Colors.black.withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(AppSizes.radiusMD),
                 ),
                 child: FaIcon(icon, color: iconColor, size: 28),

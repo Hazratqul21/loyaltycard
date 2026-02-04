@@ -114,7 +114,8 @@ class RewardsScreen extends ConsumerWidget {
   }
 
   /// Ballar karti
-  Widget _buildPointsCard(BuildContext context, int points, {bool isLoading = false}) {
+  Widget _buildPointsCard(BuildContext context, int points,
+      {bool isLoading = false}) {
     return GlassmorphicCard(
       gradientColors: AppColors.accentGradient,
       padding: const EdgeInsets.all(AppSizes.paddingLG),
@@ -124,7 +125,7 @@ class RewardsScreen extends ConsumerWidget {
             width: 60,
             height: 60,
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               borderRadius: BorderRadius.circular(AppSizes.radiusMD),
             ),
             child: const Center(
@@ -182,7 +183,7 @@ class RewardsScreen extends ConsumerWidget {
           FaIcon(
             FontAwesomeIcons.gift,
             size: 64,
-            color: context.colorScheme.primary.withOpacity(0.3),
+            color: context.colorScheme.primary.withValues(alpha: 0.3),
           ),
           const SizedBox(height: AppSizes.paddingMD),
           Text(
@@ -217,7 +218,7 @@ class RewardsScreen extends ConsumerWidget {
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.08),
+            color: Colors.black.withValues(alpha: 0.08),
             blurRadius: 15,
             offset: const Offset(0, 5),
           ),
@@ -235,9 +236,11 @@ class RewardsScreen extends ConsumerWidget {
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                   colors: [
-                    AppColors.cardColors[reward.id.hashCode % AppColors.cardColors.length],
-                    AppColors.cardColors[reward.id.hashCode % AppColors.cardColors.length]
-                        .withOpacity(0.7),
+                    AppColors.cardColors[
+                        reward.id.hashCode % AppColors.cardColors.length],
+                    AppColors.cardColors[
+                            reward.id.hashCode % AppColors.cardColors.length]
+                        .withValues(alpha: 0.7),
                   ],
                 ),
                 borderRadius: const BorderRadius.vertical(
@@ -249,7 +252,7 @@ class RewardsScreen extends ConsumerWidget {
                   Center(
                     child: FaIcon(
                       _getCategoryIcon(reward.category),
-                      color: Colors.white.withOpacity(0.5),
+                      color: Colors.white.withValues(alpha: 0.5),
                       size: 48,
                     ),
                   ),
@@ -263,7 +266,7 @@ class RewardsScreen extends ConsumerWidget {
                         vertical: AppSizes.paddingXS,
                       ),
                       decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.2),
+                        color: Colors.white.withValues(alpha: 0.2),
                         borderRadius: BorderRadius.circular(AppSizes.radiusXS),
                       ),
                       child: Text(
@@ -328,16 +331,20 @@ class RewardsScreen extends ConsumerWidget {
                     height: 32,
                     child: ElevatedButton(
                       onPressed: canRedeem
-                          ? () => _showRedeemDialog(context, ref, reward, userPoints)
+                          ? () => _showRedeemDialog(
+                              context, ref, reward, userPoints)
                           : null,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(AppSizes.radiusSM),
+                          borderRadius:
+                              BorderRadius.circular(AppSizes.radiusSM),
                         ),
                       ),
                       child: Text(
-                        canRedeem ? AppStrings.redeem : AppStrings.notEnoughPoints,
+                        canRedeem
+                            ? AppStrings.redeem
+                            : AppStrings.notEnoughPoints,
                         style: const TextStyle(fontSize: AppSizes.fontSM),
                       ),
                     ),
@@ -407,7 +414,7 @@ class RewardsScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(AppSizes.paddingMD),
               decoration: BoxDecoration(
-                color: AppColors.warning.withOpacity(0.1),
+                color: AppColors.warning.withValues(alpha: 0.1),
                 borderRadius: BorderRadius.circular(AppSizes.radiusMD),
               ),
               child: Row(
@@ -436,9 +443,9 @@ class RewardsScreen extends ConsumerWidget {
               final success = await ref
                   .read(rewardsProvider.notifier)
                   .redeemReward(reward.id, userPoints);
-              
+
               Navigator.pop(context);
-              
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(
                   content: Text(
@@ -446,7 +453,8 @@ class RewardsScreen extends ConsumerWidget {
                         ? 'Tabriklaymiz! Sovg\'a olindi!'
                         : 'Xatolik yuz berdi',
                   ),
-                  backgroundColor: success ? AppColors.success : AppColors.error,
+                  backgroundColor:
+                      success ? AppColors.success : AppColors.error,
                 ),
               );
             },

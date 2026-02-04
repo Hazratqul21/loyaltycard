@@ -8,10 +8,11 @@ import '../../domain/entities/transaction.dart';
 import '../../domain/repositories/merchant_repository.dart';
 import '../datasources/local_datasource.dart';
 import '../../core/services/sync_service.dart';
+import '../models/transaction_model.dart';
 
 class MerchantRepositoryImpl implements MerchantRepository {
   final LocalDatasource _localDatasource;
-  final FirestoreSyncService _syncService;
+  final SyncService _syncService;
 
   MerchantRepositoryImpl(this._localDatasource, this._syncService);
 
@@ -36,7 +37,8 @@ class MerchantRepositoryImpl implements MerchantRepository {
       final transaction = Transaction(
         id: DateTime.now().millisecondsSinceEpoch.toString(),
         userId: customerId,
-        cardId: 'card_$customerId', // Real ilovada foydalanuvchining o'sha do'kondagi kartasi topiladi
+        cardId:
+            'card_$customerId', // Real ilovada foydalanuvchining o'sha do'kondagi kartasi topiladi
         storeName: 'Merchant Store', // Store service dan olinadi
         amount: amount,
         points: points,
@@ -46,8 +48,10 @@ class MerchantRepositoryImpl implements MerchantRepository {
       );
 
       // 1. Tranzaksiyani saqlash va sinxronizatsiya qilish
-      await _syncService.saveTransaction(transaction);
-      
+      await _localDatasource
+          .addTransaction(TransactionModel.fromEntity(transaction));
+      await _syncService.syncAll();
+
       return true;
     } catch (e) {
       return false;
@@ -66,16 +70,19 @@ class MerchantRepositoryImpl implements MerchantRepository {
   Future<Map<String, dynamic>> getStoreOverview(String storeId) async {
     final transactions = _localDatasource.getAllTransactions();
     final today = DateTime.now();
-    
+
     final todaysTransactions = transactions.where((t) {
       final date = t.date;
-      return date.year == today.year && date.month == today.month && date.day == today.day;
+      return date.year == today.year &&
+          date.month == today.month &&
+          date.day == today.day;
     });
 
     return {
       'totalScans': transactions.length,
       'todayScans': todaysTransactions.length,
-      'totalPointsAwarded': transactions.fold(0, (sum, t) => sum + (t.typeIndex == 0 ? t.points : 0)),
+      'totalPointsAwarded': transactions.fold(
+          0, (sum, t) => sum + (t.typeIndex == 0 ? t.points : 0)),
     };
   }
 }

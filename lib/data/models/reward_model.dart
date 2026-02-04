@@ -45,13 +45,13 @@ class RewardModel extends HiveObject {
 
   @HiveField(10)
   final bool isActive;
-  
+
   @HiveField(11)
   final String? userId;
-  
+
   @HiveField(12)
   final DateTime lastModifiedAt;
-  
+
   @HiveField(13)
   final String syncStatusString;
 
@@ -71,7 +71,7 @@ class RewardModel extends HiveObject {
     required this.lastModifiedAt,
     this.syncStatusString = 'notSynced',
   });
-  
+
   /// SyncStatus getter
   SyncStatus get syncStatus => SyncStatusExtension.fromString(syncStatusString);
 
@@ -155,5 +155,40 @@ class RewardModel extends HiveObject {
       'lastModifiedAt': lastModifiedAt.toIso8601String(),
       'syncStatus': syncStatusString,
     };
+  }
+
+  /// Nusxa olish (modifikatsiya bilan)
+  RewardModel copyWith({
+    String? id,
+    String? title,
+    String? description,
+    int? requiredPoints,
+    String? imageUrl,
+    String? storeId,
+    String? storeName,
+    String? category,
+    int? quantity,
+    DateTime? expiresAt,
+    bool? isActive,
+    String? userId,
+    DateTime? lastModifiedAt,
+    String? syncStatusString,
+  }) {
+    return RewardModel(
+      id: id ?? this.id,
+      title: title ?? this.title,
+      description: description ?? this.description,
+      requiredPoints: requiredPoints ?? this.requiredPoints,
+      imageUrl: imageUrl ?? this.imageUrl,
+      storeId: storeId ?? this.storeId,
+      storeName: storeName ?? this.storeName,
+      category: category ?? this.category,
+      quantity: quantity ?? this.quantity,
+      expiresAt: expiresAt ?? this.expiresAt,
+      isActive: isActive ?? this.isActive,
+      userId: userId ?? this.userId,
+      lastModifiedAt: lastModifiedAt ?? this.lastModifiedAt,
+      syncStatusString: syncStatusString ?? this.syncStatusString,
+    );
   }
 }

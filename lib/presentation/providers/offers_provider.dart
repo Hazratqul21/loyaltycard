@@ -7,6 +7,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/offer.dart';
 import 'auth_provider.dart';
+import '../../core/utils/extensions.dart'; // Add extensions
 
 final offersProvider = Provider<List<Offer>>((ref) {
   final user = ref.watch(authProvider).user;

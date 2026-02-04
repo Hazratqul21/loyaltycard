@@ -39,7 +39,8 @@ class LocalDatasource {
 
     // Boxlarni ochish
     _cardsBox = await Hive.openBox<LoyaltyCardModel>(_cardsBoxName);
-    _transactionsBox = await Hive.openBox<TransactionModel>(_transactionsBoxName);
+    _transactionsBox =
+        await Hive.openBox<TransactionModel>(_transactionsBoxName);
     _rewardsBox = await Hive.openBox<RewardModel>(_rewardsBoxName);
 
     _isInitialized = true;
@@ -51,7 +52,7 @@ class LocalDatasource {
   List<LoyaltyCardModel> getAllCards() {
     return _cardsBox.values.toList();
   }
-  
+
   /// Sync uchun o'zgargan kartalarni olish
   List<LoyaltyCardModel> getPendingCards() {
     return _cardsBox.values
@@ -78,7 +79,7 @@ class LocalDatasource {
   Future<void> deleteCard(String id) async {
     await _cardsBox.delete(id);
   }
-  
+
   /// Barcha kartalarni almashtirish (restore uchun)
   Future<void> replaceAllCards(List<LoyaltyCardModel> cards) async {
     await _cardsBox.clear();
@@ -95,7 +96,7 @@ class LocalDatasource {
     transactions.sort((a, b) => b.date.compareTo(a.date)); // Yangi birinchi
     return transactions;
   }
-  
+
   /// Sync uchun o'zgargan tranzaksiyalar
   List<TransactionModel> getPendingTransactions() {
     return _transactionsBox.values
@@ -105,10 +106,13 @@ class LocalDatasource {
 
   /// Karta bo'yicha tranzaksiyalarni olish
   List<TransactionModel> getTransactionsByCardId(String cardId) {
-    return _transactionsBox.values
-        .where((t) => t.cardId == cardId)
-        .toList()
+    return _transactionsBox.values.where((t) => t.cardId == cardId).toList()
       ..sort((a, b) => b.date.compareTo(a.date));
+  }
+
+  /// ID bo'yicha tranzaksiyani olish
+  TransactionModel? getTransaction(String id) {
+    return _transactionsBox.get(id);
   }
 
   /// Oxirgi N ta tranzaksiya
@@ -121,9 +125,15 @@ class LocalDatasource {
   Future<void> addTransaction(TransactionModel transaction) async {
     await _transactionsBox.put(transaction.id, transaction);
   }
-  
+
+  /// Tranzaksiya yangilash
+  Future<void> updateTransaction(TransactionModel transaction) async {
+    await _transactionsBox.put(transaction.id, transaction);
+  }
+
   /// Barcha tranzaksiyalarni almashtirish (restore uchun)
-  Future<void> replaceAllTransactions(List<TransactionModel> transactions) async {
+  Future<void> replaceAllTransactions(
+      List<TransactionModel> transactions) async {
     await _transactionsBox.clear();
     for (final tx in transactions) {
       await _transactionsBox.put(tx.id, tx);
@@ -136,7 +146,12 @@ class LocalDatasource {
   List<RewardModel> getAllRewards() {
     return _rewardsBox.values.toList();
   }
-  
+
+  /// ID bo'yicha sovg'ani olish
+  RewardModel? getReward(String id) {
+    return _rewardsBox.get(id);
+  }
+
   /// Sync uchun o'zgargan sovg'alar
   List<RewardModel> getPendingRewards() {
     return _rewardsBox.values
@@ -160,7 +175,7 @@ class LocalDatasource {
   Future<void> updateReward(RewardModel reward) async {
     await _rewardsBox.put(reward.id, reward);
   }
-  
+
   /// Barcha sovg'alarni almashtirish (restore uchun)
   Future<void> replaceAllRewards(List<RewardModel> rewards) async {
     await _rewardsBox.clear();

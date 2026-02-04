@@ -15,7 +15,7 @@ class Glassmorphism {
   Glassmorphism._();
 
   /// Glassmorphic konteyner yaratish
-  /// 
+  ///
   /// [child] - ichki widget
   /// [blur] - blur darajasi (default: 10)
   /// [opacity] - shaffoflik darajasi (default: 0.1)
@@ -43,14 +43,11 @@ class Glassmorphism {
           child: Container(
             padding: padding ?? const EdgeInsets.all(AppSizes.paddingMD),
             decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.glassDark
-                  : AppColors.glassWhite,
+              color: isDark ? AppColors.glassDark : AppColors.glassWhite,
               borderRadius: BorderRadius.circular(borderRadius),
               border: Border.all(
-                color: isDark
-                    ? AppColors.glassBorderDark
-                    : AppColors.glassBorder,
+                color:
+                    isDark ? AppColors.glassBorderDark : AppColors.glassBorder,
                 width: AppSizes.glassBorderWidth,
               ),
             ),
@@ -62,7 +59,7 @@ class Glassmorphism {
   }
 
   /// Premium Glassmorphic konteyner (Tiffany theme)
-  /// 
+  ///
   /// [child] - ichki widget
   /// [blur] - blur darajasi (default: 15 - premium)
   /// [borderRadius] - burchak radiusi (default: 24)
@@ -76,11 +73,12 @@ class Glassmorphism {
     double? height,
     List<Color>? gradientColors,
   }) {
-    final colors = gradientColors ?? [
-      AppColors.tiffanyBlue,
-      AppColors.tiffanyLight,
-    ];
-    
+    final colors = gradientColors ??
+        [
+          AppColors.tiffanyBlue,
+          AppColors.tiffanyLight,
+        ];
+
     return Container(
       width: width,
       height: height,
@@ -102,13 +100,13 @@ class Glassmorphism {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: [
-                  colors[0].withOpacity(0.1),
-                  colors[1].withOpacity(0.05),
+                  colors[0].withValues(alpha: 0.1),
+                  colors[1].withValues(alpha: 0.05),
                 ],
               ),
               boxShadow: [
                 BoxShadow(
-                  color: colors[0].withOpacity(0.15),
+                  color: colors[0].withValues(alpha: 0.15),
                   blurRadius: 20,
                   spreadRadius: -5,
                   offset: const Offset(0, 10),
@@ -123,7 +121,7 @@ class Glassmorphism {
   }
 
   /// Glassmorphic BoxDecoration olish
-  /// 
+  ///
   /// [isDark] - dark mode uchun
   /// [borderRadius] - burchak radiusi
   static BoxDecoration decoration({
@@ -141,7 +139,7 @@ class Glassmorphism {
   }
 
   /// Gradient bilan glassmorphic decoration
-  /// 
+  ///
   /// [colors] - gradient ranglari
   /// [borderRadius] - burchak radiusi
   static BoxDecoration gradientDecoration({
@@ -153,16 +151,16 @@ class Glassmorphism {
       gradient: LinearGradient(
         begin: Alignment.topLeft,
         end: Alignment.bottomRight,
-        colors: colors.map((c) => c.withOpacity(opacity)).toList(),
+        colors: colors.map((c) => c.withValues(alpha: opacity)).toList(),
       ),
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
-        color: colors.first.withOpacity(0.3),
+        color: colors.first.withValues(alpha: 0.3),
         width: AppSizes.glassBorderWidth,
       ),
       boxShadow: [
         BoxShadow(
-          color: colors.first.withOpacity(0.2),
+          color: colors.first.withValues(alpha: 0.2),
           blurRadius: 20,
           spreadRadius: -5,
           offset: const Offset(0, 10),

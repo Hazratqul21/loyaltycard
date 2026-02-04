@@ -16,16 +16,16 @@ import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 enum NotificationType {
   /// Aksiya va chegirmalar
   promotion,
-  
+
   /// Yangi sovg'alar
   reward,
-  
+
   /// Ball o'zgarishi
   points,
-  
+
   /// Do'kon yangiliklari
   store,
-  
+
   /// Umumiy
   general,
 }
@@ -71,14 +71,14 @@ class NotificationSettings {
   }
 
   Map<String, dynamic> toJson() => {
-    'enabled': enabled,
-    'promotions': promotions,
-    'rewards': rewards,
-    'points': points,
-    'stores': stores,
-    'sound': sound,
-    'vibration': vibration,
-  };
+        'enabled': enabled,
+        'promotions': promotions,
+        'rewards': rewards,
+        'points': points,
+        'stores': stores,
+        'sound': sound,
+        'vibration': vibration,
+      };
 
   factory NotificationSettings.fromJson(Map<String, dynamic> json) {
     return NotificationSettings(
@@ -104,31 +104,32 @@ Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
 /// FCM Notification Service
 class NotificationService {
   static NotificationService? _instance;
-  static NotificationService get instance => _instance ??= NotificationService._();
-  
+  static NotificationService get instance =>
+      _instance ??= NotificationService._();
+
   NotificationService._();
 
   final FirebaseMessaging _messaging = FirebaseMessaging.instance;
-  final FlutterLocalNotificationsPlugin _localNotifications = 
+  final FlutterLocalNotificationsPlugin _localNotifications =
       FlutterLocalNotificationsPlugin();
 
   String? _fcmToken;
   NotificationSettings _settings = const NotificationSettings();
-  
-  final StreamController<RemoteMessage> _messageController = 
+
+  final StreamController<RemoteMessage> _messageController =
       StreamController<RemoteMessage>.broadcast();
-  final StreamController<String?> _tokenController = 
+  final StreamController<String?> _tokenController =
       StreamController<String?>.broadcast();
 
   /// FCM token
   String? get fcmToken => _fcmToken;
-  
+
   /// Bildirishnoma sozlamalari
   NotificationSettings get settings => _settings;
-  
+
   /// Message stream
   Stream<RemoteMessage> get onMessage => _messageController.stream;
-  
+
   /// Token refresh stream
   Stream<String?> get onTokenRefresh => _tokenController.stream;
 
@@ -186,8 +187,9 @@ class NotificationService {
       sound: true,
     );
 
-    final granted = settings.authorizationStatus == AuthorizationStatus.authorized ||
-        settings.authorizationStatus == AuthorizationStatus.provisional;
+    final granted =
+        settings.authorizationStatus == AuthorizationStatus.authorized ||
+            settings.authorizationStatus == AuthorizationStatus.provisional;
 
     if (kDebugMode) {
       print('🔔 Notification permission: ${settings.authorizationStatus}');
@@ -198,7 +200,8 @@ class NotificationService {
 
   /// Local notifications sozlash
   Future<void> _initializeLocalNotifications() async {
-    const androidSettings = AndroidInitializationSettings('@mipmap/ic_launcher');
+    const androidSettings =
+        AndroidInitializationSettings('@mipmap/ic_launcher');
     const iosSettings = DarwinInitializationSettings(
       requestAlertPermission: true,
       requestBadgePermission: true,
@@ -292,12 +295,15 @@ class NotificationService {
 
   /// Deep linking logic
   void _handleDeepLink(Map<String, dynamic> data) {
-    final type = data['type'] as String?;
-    final id = data['id'] as String?;
-    
+    // final type = data['type'] as String?;
+    // final id = data['id'] as String?;
+
     // app.dart dagi navigatorKey orqali navigatsiya
     // Import 'package:loyaltycard/app.dart' needed but since we use dynamic we'll be careful
     // Note: In a real project, we'd use a dedicated NavigationService
+    if (kDebugMode) {
+      print('Deep link data: $data');
+    }
   }
 
   /// Proximity notification (Yaqinlashganda)
@@ -306,10 +312,10 @@ class NotificationService {
     required String storeName,
     required double distance,
   }) async {
-    final distStr = distance < 1000 
-        ? '${distance.toInt()} m' 
+    final distStr = distance < 1000
+        ? '${distance.toInt()} m'
         : '${(distance / 1000).toStringAsFixed(1)} km';
-        
+
     await _showLocalNotification(
       title: 'Yaqinindagi do\'kon! 📍',
       body: '$storeName sizdan bor-yog\'i $distStr uzoqlikda. Kirib o\'ting!',
@@ -328,7 +334,8 @@ class NotificationService {
   }) async {
     await _showLocalNotification(
       title: 'Ballar muddati tugamoqda! ⚠️',
-      body: '$storeName dagi $points ballingiz $daysLeft kundan keyin yonib ketadi.',
+      body:
+          '$storeName dagi $points ballingiz $daysLeft kundan keyin yonib ketadi.',
       payload: jsonEncode({'type': 'wallet'}),
     );
   }

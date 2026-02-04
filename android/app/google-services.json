@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "33204887292",
+    "project_id": "loyalty-card-e5c91",
+    "storage_bucket": "loyalty-card-e5c91.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:33204887292:android:28d800d4098adbafa1c179",
+        "android_client_info": {
+          "package_name": "com.loyalty.card"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "33204887292-10iek11o7d3v1g01ibsfqpl0gr0744fm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfEP7FkJrAxTaT4HiOj4DgFcMVsEYUOJY"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "33204887292-10iek11o7d3v1g01ibsfqpl0gr0744fm.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "33204887292-lrb31st4ooa2hvnu2kmtl6uae70cq5lm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.loyalty.card"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

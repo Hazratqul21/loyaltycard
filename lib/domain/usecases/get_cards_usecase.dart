@@ -9,6 +9,6 @@ class GetCardsUseCase {
 
   // Bu funksiya repositoriydan kartalarni so'raydi
   Future<List<LoyaltyCard>> call(String userId) async {
-    return await repository.getLoyaltyCards(userId);
+    return await repository.getAllCards();
   }
 }

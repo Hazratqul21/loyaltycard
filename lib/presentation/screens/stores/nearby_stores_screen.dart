@@ -23,7 +23,6 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
   GoogleMapController? _mapController;
   bool _showList = true;
   Store? _selectedStore;
-  bool _isLocating = false;
 
   // Default: Toshkent markazi
   static const _defaultCenter = LatLng(41.3111, 69.2797);
@@ -35,7 +34,8 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
   }
 
   Future<void> _checkPermission() async {
-    final hasPermission = await PermissionService.instance.requestLocationPermission(context);
+    final hasPermission =
+        await PermissionService.instance.requestLocationPermission(context);
     if (hasPermission) {
       ref.read(storesProvider.notifier).loadStores();
     }
@@ -98,7 +98,8 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
               heroTag: 'locate_me',
               onPressed: _goToCurrentLocation,
               backgroundColor: Colors.white,
-              child: const Icon(Icons.my_location, color: AppColors.primaryColor),
+              child:
+                  const Icon(Icons.my_location, color: AppColors.primaryColor),
             ),
           ),
 
@@ -182,7 +183,7 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
               borderRadius: BorderRadius.circular(2),
             ),
           ),
-          
+
           Padding(
             padding: const EdgeInsets.all(AppSizes.paddingMD),
             child: Row(
@@ -191,21 +192,23 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
                 Text(
                   '${stores.length} ta do\'kon',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.bold,
-                  ),
+                        fontWeight: FontWeight.bold,
+                      ),
                 ),
                 TextButton.icon(
-                  onPressed: () => ref.read(storesProvider.notifier).loadStores(),
+                  onPressed: () =>
+                      ref.read(storesProvider.notifier).loadStores(),
                   icon: const Icon(Icons.refresh, size: 18),
                   label: const Text('Yangilash'),
                 ),
               ],
             ),
           ),
-          
+
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
+              padding:
+                  const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
               itemCount: stores.length,
               itemBuilder: (context, index) {
                 final (store, distance) = stores[index];
@@ -317,8 +320,8 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
                     Text(
                       store.name,
                       style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
+                            fontWeight: FontWeight.bold,
+                          ),
                     ),
                     const SizedBox(height: 4),
                     Row(
@@ -378,7 +381,8 @@ class _NearbyStoresScreenState extends ConsumerState<NearbyStoresScreen> {
             children: [
               Expanded(
                 child: OutlinedButton.icon(
-                  onPressed: store.phone != null ? () => _callStore(store) : null,
+                  onPressed:
+                      store.phone != null ? () => _callStore(store) : null,
                   icon: const FaIcon(FontAwesomeIcons.phone, size: 14),
                   label: const Text('Qo\'ng\'iroq'),
                 ),

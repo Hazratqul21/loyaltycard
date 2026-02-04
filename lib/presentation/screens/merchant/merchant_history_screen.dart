@@ -33,9 +33,9 @@ class MerchantHistoryScreen extends ConsumerWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const Center(child: CircularProgressIndicator());
           }
-          
+
           final transactions = snapshot.data ?? [];
-          
+
           if (transactions.isEmpty) {
             return _buildEmptyState(context);
           }
@@ -62,8 +62,9 @@ class MerchantHistoryScreen extends ConsumerWidget {
       ),
       child: ListTile(
         leading: CircleAvatar(
-          backgroundColor: AppColors.primaryColor.withOpacity(0.1),
-          child: const FaIcon(FontAwesomeIcons.user, size: 14, color: AppColors.primaryColor),
+          backgroundColor: AppColors.primaryColor.withValues(alpha: 0.1),
+          child: const FaIcon(FontAwesomeIcons.user,
+              size: 14, color: AppColors.primaryColor),
         ),
         title: Text(
           'Mijoz: ${tx.userId.substring(0, 8)}...',
@@ -101,7 +102,8 @@ class MerchantHistoryScreen extends ConsumerWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          FaIcon(FontAwesomeIcons.clockRotateLeft, size: 48, color: Colors.grey.shade300),
+          FaIcon(FontAwesomeIcons.clockRotateLeft,
+              size: 48, color: Colors.grey.shade300),
           const SizedBox(height: 16),
           Text(
             'Hozircha tarix mavjud emas',

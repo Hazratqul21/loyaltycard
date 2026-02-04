@@ -41,24 +41,33 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
   }
 
   void _updateCalculatedPoints() {
-    if (_sourceCard == null || _targetCard == null || _amountController.text.isEmpty) {
+    if (_sourceCard == null ||
+        _targetCard == null ||
+        _amountController.text.isEmpty) {
       if (_calculatedPoints != 0) setState(() => _calculatedPoints = 0);
       return;
     }
 
     final amount = int.tryParse(_amountController.text) ?? 0;
     final service = ref.read(partnerNetworkServiceProvider);
-    
+
     // In demo, we mock store IDs if they aren't in partners list
-    final fromId = PartnerNetworkService.partners.any((p) => p.name == _sourceCard!.storeName) 
-        ? PartnerNetworkService.partners.firstWhere((p) => p.name == _sourceCard!.storeName).id 
+    final fromId = PartnerNetworkService.partners
+            .any((p) => p.name == _sourceCard!.storeName)
+        ? PartnerNetworkService.partners
+            .firstWhere((p) => p.name == _sourceCard!.storeName)
+            .id
         : 'korzinka';
-    final toId = PartnerNetworkService.partners.any((p) => p.name == _targetCard!.storeName) 
-        ? PartnerNetworkService.partners.firstWhere((p) => p.name == _targetCard!.storeName).id 
+    final toId = PartnerNetworkService.partners
+            .any((p) => p.name == _targetCard!.storeName)
+        ? PartnerNetworkService.partners
+            .firstWhere((p) => p.name == _targetCard!.storeName)
+            .id
         : 'makro';
 
     setState(() {
-      _calculatedPoints = service.calculateConvertedPoints(fromId, toId, amount);
+      _calculatedPoints =
+          service.calculateConvertedPoints(fromId, toId, amount);
     });
   }
 
@@ -68,7 +77,7 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
     final theme = Theme.of(context);
 
     // Filter cards that are in partner network (simplified for demo)
-    final partnerCards = cardsState.cards; 
+    final partnerCards = cardsState.cards;
 
     return Scaffold(
       appBar: AppBar(
@@ -86,22 +95,19 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
             ),
             const SizedBox(height: 12),
             _buildCardSelector(partnerCards, true),
-            
             const SizedBox(height: 24),
             const Center(
-              child: FaIcon(FontAwesomeIcons.rightLeft, color: AppColors.primaryColor, size: 24),
+              child: FaIcon(FontAwesomeIcons.rightLeft,
+                  color: AppColors.primaryColor, size: 24),
             ),
             const SizedBox(height: 24),
-
             const Text(
               'Qaysi kartaga o\'tkazmoqchisiz?',
               style: TextStyle(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 12),
             _buildCardSelector(partnerCards, false),
-
             const SizedBox(height: 32),
-            
             if (_sourceCard != null && _targetCard != null) ...[
               Text(
                 'O\'tkaziladigan miqdor (${_sourceCard!.storeName})',
@@ -114,14 +120,13 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                 decoration: InputDecoration(
                   hintText: 'Ballar miqdorini kiriting',
                   suffixText: 'ball',
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
                   prefixIcon: const Icon(FontAwesomeIcons.coins, size: 16),
                 ),
               ),
               const SizedBox(height: 24),
-              
               _buildExchangePreview(),
-              
               const SizedBox(height: 40),
               SizedBox(
                 width: double.infinity,
@@ -130,11 +135,12 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                   onPressed: _isExchanging ? null : _handleExchange,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryColor,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                    shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16)),
                   ),
-                  child: _isExchanging 
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Ayirboshlashni tasdiqlash'),
+                  child: _isExchanging
+                      ? const CircularProgressIndicator(color: Colors.white)
+                      : const Text('Ayirboshlashni tasdiqlash'),
                 ),
               ),
             ],
@@ -155,7 +161,7 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
         itemBuilder: (context, index) {
           final card = cards[index];
           final isSelected = selectedCard?.id == card.id;
-          
+
           return GestureDetector(
             onTap: () {
               setState(() {
@@ -173,7 +179,9 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
               margin: const EdgeInsets.only(right: 12),
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                color: isSelected ? card.color.withOpacity(0.2) : Colors.white.withOpacity(0.05),
+                color: isSelected
+                    ? card.color.withValues(alpha: 0.2)
+                    : Colors.white.withValues(alpha: 0.05),
                 borderRadius: BorderRadius.circular(16),
                 border: Border.all(
                   color: isSelected ? card.color : Colors.transparent,
@@ -186,13 +194,14 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                     width: 40,
                     height: 40,
                     decoration: BoxDecoration(
-                      color: card.color.withOpacity(0.3),
+                      color: card.color.withValues(alpha: 0.3),
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: Text(
                         card.storeName[0],
-                        style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+                        style: const TextStyle(
+                            color: Colors.white, fontWeight: FontWeight.bold),
                       ),
                     ),
                   ),
@@ -204,12 +213,14 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
                       children: [
                         Text(
                           card.storeName,
-                          style: const TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
+                          style: const TextStyle(
+                              fontSize: 12, fontWeight: FontWeight.bold),
                           overflow: TextOverflow.ellipsis,
                         ),
                         Text(
                           '${card.currentPoints} pts',
-                          style: const TextStyle(fontSize: 10, color: Colors.grey),
+                          style:
+                              const TextStyle(fontSize: 10, color: Colors.grey),
                         ),
                       ],
                     ),
@@ -231,19 +242,29 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
         children: [
           Column(
             children: [
-              const Text('Sizdan', style: TextStyle(fontSize: 10, color: Colors.grey)),
-              Text('${_amountController.text.isEmpty ? "0" : _amountController.text} pts', 
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
-              Text(_sourceCard!.storeName, style: const TextStyle(fontSize: 10)),
+              const Text('Sizdan',
+                  style: TextStyle(fontSize: 10, color: Colors.grey)),
+              Text(
+                  '${_amountController.text.isEmpty ? "0" : _amountController.text} pts',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold)),
+              Text(_sourceCard!.storeName,
+                  style: const TextStyle(fontSize: 10)),
             ],
           ),
-          const FaIcon(FontAwesomeIcons.arrowRight, size: 16, color: Colors.grey),
+          const FaIcon(FontAwesomeIcons.arrowRight,
+              size: 16, color: Colors.grey),
           Column(
             children: [
-              const Text('Sizga', style: TextStyle(fontSize: 10, color: Colors.grey)),
-              Text('$_calculatedPoints pts', 
-                style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold, color: AppColors.success)),
-              Text(_targetCard!.storeName, style: const TextStyle(fontSize: 10)),
+              const Text('Sizga',
+                  style: TextStyle(fontSize: 10, color: Colors.grey)),
+              Text('$_calculatedPoints pts',
+                  style: const TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.success)),
+              Text(_targetCard!.storeName,
+                  style: const TextStyle(fontSize: 10)),
             ],
           ),
         ],
@@ -264,11 +285,11 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
     setState(() => _isExchanging = true);
 
     final success = await ref.read(cardsProvider.notifier).exchangePoints(
-      fromCardId: _sourceCard!.id,
-      toCardId: _targetCard!.id,
-      fromAmount: amount,
-      toAmount: _calculatedPoints,
-    );
+          fromCardId: _sourceCard!.id,
+          toCardId: _targetCard!.id,
+          fromAmount: amount,
+          toAmount: _calculatedPoints,
+        );
 
     if (mounted) {
       setState(() => _isExchanging = false);

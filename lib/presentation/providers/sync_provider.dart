@@ -6,7 +6,20 @@
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/sync_service.dart' as service;
+
+import 'connectivity_provider.dart';
 import 'auth_provider.dart';
+
+/// Sync service provider
+final syncServiceProvider = Provider<service.SyncService>((ref) {
+  final authService = ref.watch(authServiceProvider);
+  final connectivityService = ref.watch(connectivityServiceProvider);
+
+  return service.SyncService(
+    authService: authService,
+    connectivityService: connectivityService,
+  );
+});
 
 /// Sync status provider
 final syncStatusProvider = StateProvider<service.SyncStatus>((ref) {

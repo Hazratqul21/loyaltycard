@@ -53,7 +53,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              AppColors.tiffanyBlue.withOpacity(0.1),
+              AppColors.tiffanyBlue.withValues(alpha: 0.1),
               AppColors.glassBackground,
             ],
           ),
@@ -70,9 +70,10 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                   children: [
                     Text(
                       'Kartalarim',
-                      style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                        fontWeight: FontWeight.w800,
-                      ),
+                      style:
+                          Theme.of(context).textTheme.headlineMedium?.copyWith(
+                                fontWeight: FontWeight.w800,
+                              ),
                     ),
                     IconButton(
                       onPressed: () => _showAddCardDialog(context),
@@ -80,9 +81,11 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                         padding: const EdgeInsets.all(8),
                         decoration: BoxDecoration(
                           color: AppColors.tiffanyBlue,
-                          borderRadius: BorderRadius.circular(AppSizes.radiusMD),
+                          borderRadius:
+                              BorderRadius.circular(AppSizes.radiusMD),
                         ),
-                        child: const Icon(Icons.add, color: Colors.white, size: 20),
+                        child: const Icon(Icons.add,
+                            color: Colors.white, size: 20),
                       ),
                     ),
                   ],
@@ -134,7 +137,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
 
   Widget _buildCardItem(LoyaltyCard card, int index) {
     final isSelected = index == _selectedCardIndex;
-    
+
     return AnimatedScale(
       scale: isSelected ? 1.0 : 0.9,
       duration: const Duration(milliseconds: 200),
@@ -158,7 +161,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
             boxShadow: isSelected
                 ? [
                     BoxShadow(
-                      color: AppColors.tiffanyBlue.withOpacity(0.4),
+                      color: AppColors.tiffanyBlue.withValues(alpha: 0.4),
                       blurRadius: 20,
                       offset: const Offset(0, 10),
                     ),
@@ -173,7 +176,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                 padding: const EdgeInsets.all(AppSizes.paddingLG),
                 decoration: BoxDecoration(
                   border: Border.all(
-                    color: Colors.white.withOpacity(0.3),
+                    color: Colors.white.withValues(alpha: 0.3),
                     width: 1,
                   ),
                   borderRadius: BorderRadius.circular(AppSizes.radiusXXL),
@@ -196,7 +199,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                         Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.2),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: const FaIcon(
@@ -234,7 +237,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                                 vertical: 4,
                               ),
                               decoration: BoxDecoration(
-                                color: Colors.white.withOpacity(0.2),
+                                color: Colors.white.withValues(alpha: 0.2),
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
@@ -273,7 +276,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           decoration: BoxDecoration(
             color: isSelected
                 ? AppColors.tiffanyBlue
-                : AppColors.tiffanyLight.withOpacity(0.3),
+                : AppColors.tiffanyLight.withValues(alpha: 0.3),
             borderRadius: BorderRadius.circular(4),
           ),
         );
@@ -291,19 +294,18 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           Text(
             'Karta ma\'lumotlari',
             style: Theme.of(context).textTheme.titleMedium?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+                  fontWeight: FontWeight.w700,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingMD),
           _buildDetailRow('Do\'kon', card.storeName),
           _buildDetailRow('Karta ID', card.id.substring(0, 8)),
           _buildDetailRow('Joriy ballar', '${card.currentPoints}'),
           _buildDetailRow('Daraja', card.tier),
-          if (card.lastActivityAt != null)
-            _buildDetailRow(
-              'Oxirgi faollik',
-              _formatDate(card.lastActivityAt!),
-            ),
+          _buildDetailRow(
+            'Oxirgi faollik',
+            _formatDate(card.lastActivityAt),
+          ),
           const Spacer(),
           SizedBox(
             width: double.infinity,
@@ -359,7 +361,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: AppColors.tiffanyBlue.withOpacity(0.1),
+              color: AppColors.tiffanyBlue.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: FaIcon(
@@ -372,15 +374,15 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           Text(
             'Kartalar yo\'q',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+                  fontWeight: FontWeight.w700,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingSM),
           Text(
             'Birinchi kartangizni qo\'shing',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey,
-            ),
+                  color: Colors.grey,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingLG),
           ElevatedButton.icon(
@@ -434,8 +436,8 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           Text(
             card.storeName,
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w800,
-            ),
+                  fontWeight: FontWeight.w800,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingMD),
           Container(
@@ -445,7 +447,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
               borderRadius: BorderRadius.circular(AppSizes.radiusLG),
               boxShadow: [
                 BoxShadow(
-                  color: AppColors.tiffanyBlue.withOpacity(0.2),
+                  color: AppColors.tiffanyBlue.withValues(alpha: 0.2),
                   blurRadius: 20,
                   spreadRadius: -5,
                 ),
@@ -470,15 +472,15 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
           Text(
             card.id.substring(0, 8).toUpperCase(),
             style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-              fontWeight: FontWeight.w600,
-              letterSpacing: 2,
-            ),
+                  fontWeight: FontWeight.w600,
+                  letterSpacing: 2,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingSM),
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
-              color: AppColors.tiffanyBlue.withOpacity(0.1),
+              color: AppColors.tiffanyBlue.withValues(alpha: 0.1),
               borderRadius: BorderRadius.circular(AppSizes.radiusMD),
             ),
             child: Text(

@@ -12,6 +12,7 @@ import '../../../core/constants/app_sizes.dart';
 import '../../providers/social_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
+import '../../../core/utils/extensions.dart';
 
 class LeaderboardScreen extends ConsumerWidget {
   const LeaderboardScreen({super.key});
@@ -31,13 +32,13 @@ class LeaderboardScreen extends ConsumerWidget {
         children: [
           // Multi-tab header (Global / Friends)
           _buildPrivacyToggle(ref, socialState.isPrivacyOptIn),
-          
+
           Expanded(
-            child: socialState.isLoading 
-              ? const Center(child: CircularProgressIndicator())
-              : _buildList(socialState.globalLeaderboard, currentUser?.uid),
+            child: socialState.isLoading
+                ? const Center(child: CircularProgressIndicator())
+                : _buildList(socialState.globalLeaderboard, currentUser?.uid),
           ),
-          
+
           // User's own rank indicator at the bottom
           if (socialState.isPrivacyOptIn && currentUser != null)
             _buildUserRankSummary(currentUser),
@@ -57,14 +58,18 @@ class LeaderboardScreen extends ConsumerWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Reytingda qatnashish', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
-                  Text('Ballaringiz barcha foydalanuvchilarga ko\'rinadi', style: TextStyle(fontSize: 10, color: Colors.grey)),
+                  Text('Reytingda qatnashish',
+                      style:
+                          TextStyle(fontSize: 14, fontWeight: FontWeight.bold)),
+                  Text('Ballaringiz barcha foydalanuvchilarga ko\'rinadi',
+                      style: TextStyle(fontSize: 10, color: Colors.grey)),
                 ],
               ),
             ),
             Switch.adaptive(
               value: isOptIn,
-              onChanged: (val) => ref.read(socialProvider.notifier).togglePrivacy(val),
+              onChanged: (val) =>
+                  ref.read(socialProvider.notifier).togglePrivacy(val),
               activeColor: AppColors.primaryColor,
             ),
           ],
@@ -85,9 +90,13 @@ class LeaderboardScreen extends ConsumerWidget {
         return Container(
           margin: const EdgeInsets.only(bottom: 12),
           decoration: BoxDecoration(
-            color: isMe ? AppColors.primaryColor.withOpacity(0.1) : Theme.of(context).cardTheme.color,
+            color: isMe
+                ? AppColors.primaryColor.withOpacity(0.1)
+                : Theme.of(context).cardTheme.color,
             borderRadius: BorderRadius.circular(16),
-            border: isMe ? Border.all(color: AppColors.primaryColor.withOpacity(0.3)) : null,
+            border: isMe
+                ? Border.all(color: AppColors.primaryColor.withOpacity(0.3))
+                : null,
           ),
           child: ListTile(
             leading: Row(
@@ -98,18 +107,29 @@ class LeaderboardScreen extends ConsumerWidget {
                 CircleAvatar(
                   radius: 20,
                   backgroundColor: AppColors.primaryColor.withOpacity(0.1),
-                  child: Text(entry.displayName[0], style: const TextStyle(color: AppColors.primaryColor)),
+                  child: Text(entry.displayName[0],
+                      style: const TextStyle(color: AppColors.primaryColor)),
                 ),
               ],
             ),
-            title: Text(entry.displayName, style: TextStyle(fontWeight: isMe ? FontWeight.bold : FontWeight.normal)),
-            subtitle: Text(entry.tier, style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+            title: Text(entry.displayName,
+                style: TextStyle(
+                    fontWeight: isMe ? FontWeight.bold : FontWeight.normal)),
+            subtitle: Text(entry.tier,
+                style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
             trailing: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Text('${entry.points.toString()} pts', style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                if (isMe) const Text('Siz', style: TextStyle(fontSize: 10, color: AppColors.primaryColor, fontWeight: FontWeight.bold)),
+                Text('${entry.points.toString()} pts',
+                    style: const TextStyle(
+                        fontWeight: FontWeight.bold, fontSize: 16)),
+                if (isMe)
+                  const Text('Siz',
+                      style: TextStyle(
+                          fontSize: 10,
+                          color: AppColors.primaryColor,
+                          fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -157,8 +177,16 @@ class LeaderboardScreen extends ConsumerWidget {
           const Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text('SIZNING O\'RNINGIZ', style: TextStyle(color: Colors.white70, fontSize: 10, fontWeight: FontWeight.bold)),
-              Text('#8 Dunyo bo\'yicha', style: TextStyle(color: Colors.white, fontSize: 18, fontWeight: FontWeight.bold)),
+              Text('SIZNING O\'RNINGIZ',
+                  style: TextStyle(
+                      color: Colors.white70,
+                      fontSize: 10,
+                      fontWeight: FontWeight.bold)),
+              Text('#8 Dunyo bo\'yicha',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold)),
             ],
           ),
           ElevatedButton(
@@ -166,7 +194,8 @@ class LeaderboardScreen extends ConsumerWidget {
             style: ElevatedButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: AppColors.primaryColor,
-              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12)),
             ),
             child: const Text('Top 10 ga kirish'),
           ),

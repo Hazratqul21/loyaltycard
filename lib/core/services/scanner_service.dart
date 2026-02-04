@@ -14,10 +14,10 @@ import 'package:nfc_manager/nfc_manager.dart';
 enum ScanType {
   /// QR kod
   qrCode,
-  
+
   /// Barcode (EAN, Code128, etc.)
   barcode,
-  
+
   /// NFC tag
   nfc,
 }
@@ -75,30 +75,30 @@ class ScanResult {
 class ScannerService {
   static ScannerService? _instance;
   static ScannerService get instance => _instance ??= ScannerService._();
-  
+
   ScannerService._();
 
   MobileScannerController? _cameraController;
   bool _isNfcAvailable = false;
   bool _isScanning = false;
-  
-  final StreamController<ScanResult> _scanController = 
+
+  final StreamController<ScanResult> _scanController =
       StreamController<ScanResult>.broadcast();
-  final StreamController<bool> _scanningStateController = 
+  final StreamController<bool> _scanningStateController =
       StreamController<bool>.broadcast();
 
   /// NFC mavjudmi?
   bool get isNfcAvailable => _isNfcAvailable;
-  
+
   /// Skanerlash jarayonida
   bool get isScanning => _isScanning;
-  
+
   /// Skan natijalari stream
   Stream<ScanResult> get scanResults => _scanController.stream;
-  
+
   /// Scanning state stream
   Stream<bool> get scanningState => _scanningStateController.stream;
-  
+
   /// Camera controller
   MobileScannerController? get cameraController => _cameraController;
 
@@ -112,7 +112,7 @@ class ScannerService {
         _isNfcAvailable = false;
       }
     }
-    
+
     if (kDebugMode) {
       print('📷 ScannerService initialized');
       print('   NFC available: $_isNfcAvailable');
@@ -154,9 +154,9 @@ class ScannerService {
           type: _getBarcodeType(barcode.format),
           format: barcode.format.name,
         );
-        
+
         _scanController.add(result);
-        
+
         if (kDebugMode) {
           print('📷 Barcode detected: ${result.rawValue}');
         }
@@ -196,24 +196,24 @@ class ScannerService {
 
     try {
       await NfcManager.instance.startSession(
+        pollingOptions: {
+          NfcPollingOption.iso14443,
+          NfcPollingOption.iso15693,
+        },
         onDiscovered: (NfcTag tag) async {
           final result = _parseNfcTag(tag);
           if (result != null) {
             _scanController.add(result);
           }
-          
+
           // Session'ni tugatmaslik (doimiy o'qish)
         },
-        onError: (error) async {
-          if (kDebugMode) print('❌ NFC error: $error');
-        },
       );
-      
+
       if (kDebugMode) print('📱 NFC scanning started');
     } catch (e) {
       if (kDebugMode) print('❌ NFC start error: $e');
-      _isScanning = false;
-      _scanningStateController.add(false);
+      _scanController.addError(e);
     }
   }
 
@@ -223,9 +223,6 @@ class ScannerService {
 
     try {
       await NfcManager.instance.stopSession();
-      _isScanning = false;
-      _scanningStateController.add(false);
-      
       if (kDebugMode) print('📱 NFC scanning stopped');
     } catch (e) {
       if (kDebugMode) print('❌ NFC stop error: $e');
@@ -234,75 +231,15 @@ class ScannerService {
 
   /// NFC tag'ni parse qilish
   ScanResult? _parseNfcTag(NfcTag tag) {
-    // NDEF formatini tekshirish
-    final ndef = Ndef.from(tag);
-    if (ndef != null && ndef.cachedMessage != null) {
-      for (final record in ndef.cachedMessage!.records) {
-        // Text record
-        if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown) {
-          final payload = String.fromCharCodes(record.payload);
-          // Language code'ni olib tashlash (birinchi bir necha byte)
-          final textStart = payload.indexOf(RegExp(r'[a-zA-Z0-9]'));
-          final text = textStart > 0 ? payload.substring(textStart) : payload;
-          
-          return ScanResult(
-            rawValue: text,
-            type: ScanType.nfc,
-            format: 'NDEF Text',
-            metadata: {
-              'tagId': tag.handle,
-            },
-          );
-        }
-        
-        // URI record
-        if (record.typeNameFormat == NdefTypeNameFormat.nfcWellknown &&
-            record.type.isNotEmpty &&
-            record.type[0] == 0x55) { // 'U' for URI
-          final uri = _parseNdefUri(record.payload);
-          if (uri != null) {
-            return ScanResult(
-              rawValue: uri,
-              type: ScanType.nfc,
-              format: 'NDEF URI',
-              metadata: {'tagId': tag.handle},
-            );
-          }
-        }
-      }
-    }
+    // Raw tag data (using toString as data is protected)
+    final tagData = tag.toString();
 
-    // Raw tag data
-    final tagData = tag.data.toString();
     return ScanResult(
       rawValue: tagData,
       type: ScanType.nfc,
       format: 'Raw',
-      metadata: {'tagId': tag.handle},
+      metadata: {'description': 'NFC Tag Detected'},
     );
-  }
-
-  /// NDEF URI parse
-  String? _parseNdefUri(List<int> payload) {
-    if (payload.isEmpty) return null;
-    
-    // URI prefix codes
-    const prefixes = [
-      '', 'http://www.', 'https://www.', 'http://', 'https://',
-      'tel:', 'mailto:', 'ftp://anonymous:anonymous@', 'ftp://ftp.',
-      'ftps://', 'sftp://', 'smb://', 'nfs://', 'ftp://', 'dav://',
-      'news:', 'telnet://', 'imap:', 'rtsp://', 'urn:', 'pop:',
-      'sip:', 'sips:', 'tftp:', 'btspp://', 'btl2cap://', 'btgoep://',
-      'tcpobex://', 'irdaobex://', 'file://', 'urn:epc:id:',
-      'urn:epc:tag:', 'urn:epc:pat:', 'urn:epc:raw:', 'urn:epc:',
-      'urn:nfc:',
-    ];
-    
-    final prefixCode = payload[0];
-    final prefix = prefixCode < prefixes.length ? prefixes[prefixCode] : '';
-    final uriBody = String.fromCharCodes(payload.sublist(1));
-    
-    return prefix + uriBody;
   }
 
   // ==================== Utility ====================

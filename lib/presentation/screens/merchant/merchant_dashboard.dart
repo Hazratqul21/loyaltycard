@@ -12,6 +12,7 @@ import '../../../core/constants/app_sizes.dart';
 import '../../providers/merchant_provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
+import '../../../core/utils/extensions.dart';
 
 class MerchantDashboard extends ConsumerWidget {
   const MerchantDashboard({super.key});
@@ -38,23 +39,24 @@ class MerchantDashboard extends ConsumerWidget {
 
             // Statistics Grid
             FutureBuilder<Map<String, dynamic>>(
-              future: repo.getStoreOverview(authState.user?.storeId ?? 'demo_store'),
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                }
-                final data = snapshot.data ?? {};
-                return _buildStatsGrid(context, data);
-              }
-            ),
+                future: repo
+                    .getStoreOverview(authState.user?.storeId ?? 'demo_store'),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  final data = snapshot.data ?? {};
+                  return _buildStatsGrid(context, data);
+                }),
 
             const SizedBox(height: AppSizes.paddingLG),
             Text(
               'Bugungi skanerlar',
-              style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
+              style: theme.textTheme.titleMedium
+                  ?.copyWith(fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: AppSizes.paddingMD),
-            
+
             // Empty State placeholder for now
             _buildEmptyScans(context),
           ],
@@ -72,10 +74,11 @@ class MerchantDashboard extends ConsumerWidget {
           Container(
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: Colors.white.withOpacity(0.2),
+              color: Colors.white.withValues(alpha: 0.2),
               shape: BoxShape.circle,
             ),
-            child: const FaIcon(FontAwesomeIcons.shop, color: Colors.white, size: 24),
+            child: const FaIcon(FontAwesomeIcons.shop,
+                color: Colors.white, size: 24),
           ),
           const SizedBox(width: AppSizes.paddingMD),
           Expanded(
@@ -107,13 +110,14 @@ class MerchantDashboard extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
       decoration: BoxDecoration(
-        color: AppColors.success.withOpacity(0.2),
+        color: AppColors.success.withValues(alpha: 0.2),
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.success.withOpacity(0.5)),
+        border: Border.all(color: AppColors.success.withValues(alpha: 0.5)),
       ),
       child: const Text(
         'FAOL',
-        style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+        style: TextStyle(
+            color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
       ),
     );
   }
@@ -145,13 +149,14 @@ class MerchantDashboard extends ConsumerWidget {
     );
   }
 
-  Widget _buildStatCard(BuildContext context, String title, String value, IconData icon, Color color) {
+  Widget _buildStatCard(BuildContext context, String title, String value,
+      IconData icon, Color color) {
     return Container(
       padding: const EdgeInsets.all(AppSizes.paddingMD),
       decoration: BoxDecoration(
         color: Theme.of(context).cardTheme.color,
         borderRadius: BorderRadius.circular(AppSizes.radiusLG),
-        border: Border.all(color: color.withOpacity(0.1)),
+        border: Border.all(color: color.withValues(alpha: 0.1)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -161,7 +166,8 @@ class MerchantDashboard extends ConsumerWidget {
             children: [
               FaIcon(icon, size: 14, color: color),
               const SizedBox(width: 8),
-              Text(title, style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
+              Text(title,
+                  style: TextStyle(fontSize: 12, color: Colors.grey.shade600)),
             ],
           ),
           const SizedBox(height: 8),
@@ -180,7 +186,8 @@ class MerchantDashboard extends ConsumerWidget {
         padding: const EdgeInsets.all(AppSizes.paddingXL),
         child: Column(
           children: [
-            FaIcon(FontAwesomeIcons.magnifyingGlass, size: 40, color: Colors.grey.shade300),
+            FaIcon(FontAwesomeIcons.magnifyingGlass,
+                size: 40, color: Colors.grey.shade300),
             const SizedBox(height: 12),
             Text(
               'Bugun hali skanerlash amalga oshirilmadi',

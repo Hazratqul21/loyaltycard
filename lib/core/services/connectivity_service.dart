@@ -12,10 +12,10 @@ import 'package:flutter/foundation.dart';
 enum ConnectivityStatus {
   /// Aloqa bor
   connected,
-  
+
   /// Aloqa yo'q
   disconnected,
-  
+
   /// Tekshirilmoqda
   checking,
 }
@@ -23,23 +23,23 @@ enum ConnectivityStatus {
 /// Internet aloqasini kuzatish xizmati
 class ConnectivityService {
   final Connectivity _connectivity;
-  
+
   /// Aloqa holatini stream sifatida olish uchun controller
   final StreamController<ConnectivityStatus> _statusController =
       StreamController<ConnectivityStatus>.broadcast();
-  
+
   /// Joriy aloqa holati
   ConnectivityStatus _currentStatus = ConnectivityStatus.checking;
-  
+
   /// Stream subscription
-  StreamSubscription<List<ConnectivityResult>>? _subscription;
+  StreamSubscription<ConnectivityResult>? _subscription;
 
   ConnectivityService({Connectivity? connectivity})
       : _connectivity = connectivity ?? Connectivity();
 
   /// Joriy aloqa holati
   ConnectivityStatus get currentStatus => _currentStatus;
-  
+
   /// Internet bilan aloqa bormi?
   bool get isConnected => _currentStatus == ConnectivityStatus.connected;
 
@@ -50,9 +50,10 @@ class ConnectivityService {
   Future<void> initialize() async {
     // Joriy holatni tekshirish
     await _checkConnectivity();
-    
+
     // O'zgarishlarni tinglash
-    _subscription = _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
+    _subscription =
+        _connectivity.onConnectivityChanged.listen(_onConnectivityChanged);
   }
 
   /// Xizmatni to'xtatish
@@ -70,8 +71,8 @@ class ConnectivityService {
   /// Aloqa holatini tekshirish (ichki)
   Future<void> _checkConnectivity() async {
     try {
-      final results = await _connectivity.checkConnectivity();
-      _updateStatus(_resultsToStatus(results));
+      final result = await _connectivity.checkConnectivity();
+      _updateStatus(_resultToStatus(result));
     } catch (e) {
       if (kDebugMode) {
         print('❌ Aloqa tekshirish xatosi: $e');
@@ -81,13 +82,13 @@ class ConnectivityService {
   }
 
   /// Aloqa o'zgarganda chaqiriladi
-  void _onConnectivityChanged(List<ConnectivityResult> results) {
-    _updateStatus(_resultsToStatus(results));
+  void _onConnectivityChanged(ConnectivityResult result) {
+    _updateStatus(_resultToStatus(result));
   }
 
-  /// ConnectivityResult larni ConnectivityStatus ga o'girish
-  ConnectivityStatus _resultsToStatus(List<ConnectivityResult> results) {
-    if (results.isEmpty || results.contains(ConnectivityResult.none)) {
+  /// ConnectivityResult ni ConnectivityStatus ga o'girish
+  ConnectivityStatus _resultToStatus(ConnectivityResult result) {
+    if (result == ConnectivityResult.none) {
       return ConnectivityStatus.disconnected;
     }
     return ConnectivityStatus.connected;
@@ -98,7 +99,7 @@ class ConnectivityService {
     if (_currentStatus != status) {
       _currentStatus = status;
       _statusController.add(status);
-      
+
       if (kDebugMode) {
         final emoji = status == ConnectivityStatus.connected ? '🌐' : '📵';
         print('$emoji Aloqa holati: $status');

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'core/theme/app_theme.dart';
@@ -31,8 +32,14 @@ class LoyaltyCardApp extends ConsumerWidget {
         Locale('ru'),
         Locale('en'),
       ],
+      localizationsDelegates: const [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
       home: authState.when(
-        data: (user) => user != null ? const MainNavigationScreen() : const LoginScreen(),
+        data: (user) =>
+            user != null ? const MainNavigationScreen() : const LoginScreen(),
         loading: () => const Scaffold(
           body: Center(child: CircularProgressIndicator()),
         ),
@@ -66,8 +73,10 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
   /// Navigation items
   static const List<_NavItem> _navItems = [
     _NavItem(icon: FontAwesomeIcons.house, activeIcon: FontAwesomeIcons.house),
-    _NavItem(icon: FontAwesomeIcons.wallet, activeIcon: FontAwesomeIcons.wallet),
-    _NavItem(icon: FontAwesomeIcons.qrcode, activeIcon: FontAwesomeIcons.qrcode),
+    _NavItem(
+        icon: FontAwesomeIcons.wallet, activeIcon: FontAwesomeIcons.wallet),
+    _NavItem(
+        icon: FontAwesomeIcons.qrcode, activeIcon: FontAwesomeIcons.qrcode),
     _NavItem(icon: FontAwesomeIcons.heart, activeIcon: FontAwesomeIcons.heart),
     _NavItem(icon: FontAwesomeIcons.gear, activeIcon: FontAwesomeIcons.gear),
   ];
@@ -91,12 +100,13 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
             final index = entry.key;
             final item = entry.value;
             final isActive = index == _currentIndex;
-            
+
             return GestureDetector(
               onTap: () => setState(() => _currentIndex = index),
               behavior: HitTestBehavior.opaque,
               child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                 child: Column(
                   mainAxisSize: MainAxisSize.min,
                   children: [
@@ -111,7 +121,9 @@ class _MainNavigationScreenState extends State<MainNavigationScreen> {
                       height: 4,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isActive ? AppTheme.accentPurple : Colors.transparent,
+                        color: isActive
+                            ? AppTheme.accentPurple
+                            : Colors.transparent,
                       ),
                     ),
                   ],

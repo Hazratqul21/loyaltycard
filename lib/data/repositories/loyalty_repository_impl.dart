@@ -4,6 +4,7 @@
 /// LoyaltyRepository implementatsiyasi.
 /// ==========================================================================
 
+import 'package:flutter/foundation.dart';
 import '../../domain/entities/loyalty_card.dart';
 import '../../domain/entities/transaction.dart';
 import '../../domain/entities/reward.dart';
@@ -113,17 +114,8 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
 
     // Miqdorni kamaytirish (agar cheksiz bo'lmasa)
     if (reward.quantity > 0) {
-      final updatedReward = RewardModel(
-        id: reward.id,
-        title: reward.title,
-        description: reward.description,
-        requiredPoints: reward.requiredPoints,
-        imageUrl: reward.imageUrl,
-        storeId: reward.storeId,
-        storeName: reward.storeName,
-        category: reward.category,
+      final updatedReward = reward.copyWith(
         quantity: reward.quantity - 1,
-        expiresAt: reward.expiresAt,
         isActive: reward.quantity - 1 > 0,
       );
       await _localDatasource.updateReward(updatedReward);
@@ -137,7 +129,7 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
   @override
   Future<int> getTotalPoints() async {
     final cards = _localDatasource.getAllCards();
-    return cards.fold(0, (sum, card) => sum + card.currentPoints);
+    return cards.fold<int>(0, (sum, card) => sum + card.currentPoints);
   }
 
   @override
@@ -145,15 +137,15 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
     final transactions = _localDatasource.getAllTransactions();
     return transactions
         .where((tx) => tx.typeIndex == 0) // earn
-        .fold(0, (sum, tx) => sum + tx.points);
+        .fold<int>(0, (sum, tx) => sum + tx.points);
   }
 
   @override
-  Future<int> calculateTier(int earnedPoints) async {
-    if (earnedPoints >= 10000) return 4; // Platinum
-    if (earnedPoints >= 5000) return 3; // Gold
-    if (earnedPoints >= 2000) return 2; // Silver
-    return 1; // Bronze
+  Future<String> calculateTier(int earnedPoints) async {
+    if (earnedPoints >= 10000) return 'Platinum';
+    if (earnedPoints >= 5000) return 'Gold';
+    if (earnedPoints >= 2000) return 'Silver';
+    return 'Bronze';
   }
 
   @override
@@ -164,25 +156,21 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
     required int toAmount,
   }) async {
     try {
-      final fromCardModel = await _localDatasource.getCardById(fromCardId);
-      final toCardModel = await _localDatasource.getCardById(toCardId);
+      final fromCardModel = _localDatasource.getCardById(fromCardId);
+      final toCardModel = _localDatasource.getCardById(toCardId);
 
       if (fromCardModel == null || toCardModel == null) return false;
       if (fromCardModel.currentPoints < fromAmount) return false;
 
       // 1. Balanslarni yangilash
-      final updatedFrom = LoyaltyCardModel.fromEntity(
-        fromCardModel.toEntity().copyWith(
-          currentPoints: fromCardModel.currentPoints - fromAmount,
-          lastActivityAt: DateTime.now(),
-        )/*.markAsModified()*/, // Assuming markAsModified is not needed or handled internally
+      final updatedFrom = fromCardModel.copyWith(
+        currentPoints: fromCardModel.currentPoints - fromAmount,
+        lastActivityAt: DateTime.now(),
       );
 
-      final updatedTo = LoyaltyCardModel.fromEntity(
-        toCardModel.toEntity().copyWith(
-          currentPoints: toCardModel.currentPoints + toAmount,
-          lastActivityAt: DateTime.now(),
-        )/*.markAsModified()*/, // Assuming markAsModified is not needed or handled internally
+      final updatedTo = toCardModel.copyWith(
+        currentPoints: toCardModel.currentPoints + toAmount,
+        lastActivityAt: DateTime.now(),
       );
 
       await _localDatasource.updateCard(updatedFrom);
@@ -195,7 +183,7 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
         cardId: fromCardId,
         storeName: fromCardModel.storeName,
         points: fromAmount,
-        type: TransactionType.redeem,
+        type: TransactionType.spend, // Using spend instead of redeem
         date: DateTime.now(),
         description: '${toCardModel.storeName} ga ayirboshlash',
       ));
@@ -216,6 +204,7 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
 
       return true;
     } catch (e) {
+      if (kDebugMode) print('Exchange error: $e');
       return false;
     }
   }
@@ -224,13 +213,14 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
   Future<Map<String, int>> getMonthlyStats() async {
     final transactions = _localDatasource.getAllTransactions();
     final Map<String, int> stats = {};
-    
+
     for (final tx in transactions) {
-      final monthKey = '${tx.date.year}-${tx.date.month.toString().padLeft(2, '0')}';
+      final monthKey =
+          '${tx.date.year}-${tx.date.month.toString().padLeft(2, '0')}';
       final points = tx.typeIndex == 0 ? tx.points : -tx.points;
       stats[monthKey] = (stats[monthKey] ?? 0) + points;
     }
-    
+
     return stats;
   }
 
@@ -238,13 +228,14 @@ class LoyaltyRepositoryImpl implements LoyaltyRepository {
   Future<Map<String, int>> getStatsByStore() async {
     final transactions = _localDatasource.getAllTransactions();
     final Map<String, int> stats = {};
-    
+
     for (final tx in transactions) {
-      if (tx.typeIndex == 0) { // Faqat yig'ilgan ballar
+      if (tx.typeIndex == 0) {
+        // Faqat yig'ilgan ballar
         stats[tx.storeName] = (stats[tx.storeName] ?? 0) + tx.points;
       }
     }
-    
+
     return stats;
   }
 }

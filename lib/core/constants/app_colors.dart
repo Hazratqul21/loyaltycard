@@ -14,32 +14,32 @@ class AppColors {
   // ==================== Asosiy ranglar ====================
   /// Asosiy brend rangi - Deep Violet
   static const Color primaryColor = Color(0xFF6200EE);
-  
+
   /// Asosiy rangning yorqinroq varianti
   static const Color primaryLight = Color(0xFFBB86FC);
-  
+
   /// Asosiy rangning to'qroq varianti
   static const Color primaryDark = Color(0xFF3700B3);
-  
+
   /// Aktsent rangi - Teal
   static const Color accentColor = Color(0xFF03DAC6);
-  
+
   /// Ikkilamchi aktsent
   static const Color secondaryAccent = Color(0xFF018786);
 
   // ==================== Tiffany Glassmorphism palette ====================
   /// Asosiy Tiffany ko'k rang
   static const Color tiffanyBlue = Color(0xFF0ABAB5);
-  
+
   /// Ochiq Tiffany rang
   static const Color tiffanyLight = Color(0xFF81D8D0);
-  
+
   /// Tiffany mint rang
   static const Color tiffanyMint = Color(0xFFB2F7EF);
-  
+
   /// Glass background rang
   static const Color glassBackground = Color(0xFFE8F8F5);
-  
+
   /// Premium oq rang
   static const Color premiumWhite = Color(0xFFFAFCFB);
 
@@ -61,22 +61,22 @@ class AppColors {
 
   // ==================== Glassmorphism ranglari ====================
   /// Glassmorphism effekti uchun shaffof oq rang
-  static Color glassWhite = Colors.white.withOpacity(0.1);
-  
+  static Color glassWhite = Colors.white.withValues(alpha: 0.1);
+
   /// Glassmorphism chegarasi uchun rang
-  static Color glassBorder = Colors.white.withOpacity(0.2);
-  
+  static Color glassBorder = Colors.white.withValues(alpha: 0.2);
+
   /// Dark mode glassmorphism
-  static Color glassDark = Colors.black.withOpacity(0.3);
-  
+  static Color glassDark = Colors.black.withValues(alpha: 0.3);
+
   /// Glassmorphism chegarasi dark mode uchun
-  static Color glassBorderDark = Colors.white.withOpacity(0.1);
+  static Color glassBorderDark = Colors.white.withValues(alpha: 0.1);
 
   /// Premium glassmorphism oq rang (stronger effect)
-  static Color glassWhitePremium = Colors.white.withOpacity(0.25);
-  
+  static Color glassWhitePremium = Colors.white.withValues(alpha: 0.25);
+
   /// Premium glassmorphism chegara
-  static Color glassBorderPremium = Colors.white.withOpacity(0.4);
+  static Color glassBorderPremium = Colors.white.withValues(alpha: 0.4);
 
   // ==================== Status ranglari ====================
   static const Color success = Color(0xFF4CAF50);

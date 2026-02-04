@@ -36,13 +36,13 @@ class TransactionModel extends HiveObject {
 
   @HiveField(7)
   final String? description;
-  
+
   @HiveField(8)
   final String? userId;
-  
+
   @HiveField(9)
   final DateTime lastModifiedAt;
-  
+
   @HiveField(10)
   final String syncStatusString;
 
@@ -63,7 +63,10 @@ class TransactionModel extends HiveObject {
   /// TransactionType getter
   TransactionType get type =>
       typeString == 'earn' ? TransactionType.earn : TransactionType.spend;
-      
+
+  /// TransactionType index getter (for easy sorting/checks)
+  int get typeIndex => type.index;
+
   /// SyncStatus getter
   SyncStatus get syncStatus => SyncStatusExtension.fromString(syncStatusString);
 
@@ -133,5 +136,34 @@ class TransactionModel extends HiveObject {
       'lastModifiedAt': lastModifiedAt.toIso8601String(),
       'syncStatus': syncStatusString,
     };
+  }
+
+  /// Nusxa olish (modifikatsiya bilan)
+  TransactionModel copyWith({
+    String? id,
+    String? cardId,
+    String? storeName,
+    double? amount,
+    int? points,
+    String? typeString,
+    DateTime? date,
+    String? description,
+    String? userId,
+    DateTime? lastModifiedAt,
+    String? syncStatusString,
+  }) {
+    return TransactionModel(
+      id: id ?? this.id,
+      cardId: cardId ?? this.cardId,
+      storeName: storeName ?? this.storeName,
+      amount: amount ?? this.amount,
+      points: points ?? this.points,
+      typeString: typeString ?? this.typeString,
+      date: date ?? this.date,
+      description: description ?? this.description,
+      userId: userId ?? this.userId,
+      lastModifiedAt: lastModifiedAt ?? this.lastModifiedAt,
+      syncStatusString: syncStatusString ?? this.syncStatusString,
+    );
   }
 }

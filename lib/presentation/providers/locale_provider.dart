@@ -6,7 +6,7 @@ final localeProvider = StateNotifierProvider<LocaleNotifier, Locale>((ref) {
 });
 
 class LocaleNotifier extends StateNotifier<Locale> {
-  LocaleNotifier() : super(const Locale('uz'));
+  LocaleNotifier() : super(const Locale('en'));
 
   void setLocale(Locale locale) {
     state = locale;

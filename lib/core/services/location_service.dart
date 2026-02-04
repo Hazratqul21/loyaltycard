@@ -15,16 +15,16 @@ import 'package:geocoding/geocoding.dart';
 enum LocationStatus {
   /// Ruxsat berilmagan
   denied,
-  
+
   /// Doim rad etilgan
   deniedForever,
-  
+
   /// Ruxsat berilgan
   granted,
-  
+
   /// Xizmat o'chirilgan
   serviceDisabled,
-  
+
   /// Noma'lum
   unknown,
 }
@@ -73,45 +73,53 @@ enum GeofenceEvent {
 class LocationService {
   static LocationService? _instance;
   static LocationService get instance => _instance ??= LocationService._();
-  
+
   LocationService._();
 
   Position? _currentPosition;
   LocationStatus _status = LocationStatus.unknown;
   StreamSubscription<Position>? _positionSubscription;
-  
+
   final List<GeofenceZone> _geofences = [];
   final Set<String> _insideZones = {};
-  
-  final StreamController<Position> _positionController = 
+
+  final StreamController<Position> _positionController =
       StreamController<Position>.broadcast();
-  final StreamController<(GeofenceZone, GeofenceEvent)> _geofenceController = 
+  final StreamController<(GeofenceZone, GeofenceEvent)> _geofenceController =
       StreamController<(GeofenceZone, GeofenceEvent)>.broadcast();
 
   /// Joriy joylashuv
   Position? get currentPosition => _currentPosition;
-  
+
   /// Joylashuv holati
   LocationStatus get status => _status;
-  
+
   /// Joylashuv stream
   Stream<Position> get positionStream => _positionController.stream;
-  
+
   /// Geofence event stream
-  Stream<(GeofenceZone, GeofenceEvent)> get geofenceStream => _geofenceController.stream;
+  Stream<(GeofenceZone, GeofenceEvent)> get geofenceStream =>
+      _geofenceController.stream;
 
   /// Xizmatni boshlash
   Future<LocationStatus> initialize() async {
-    _status = await checkPermission();
-    
-    if (_status == LocationStatus.granted) {
-      await _startLocationUpdates();
+    try {
+      _status = await checkPermission();
+
+      if (_status == LocationStatus.granted) {
+        await _startLocationUpdates();
+      }
+    } catch (e) {
+      if (kDebugMode) {
+        print('❌ LocationService initialization failed: $e');
+      }
+      _status = LocationStatus.denied;
     }
-    
+
     if (kDebugMode) {
       print('📍 LocationService initialized: $_status');
     }
-    
+
     return _status;
   }
 
@@ -125,7 +133,7 @@ class LocationService {
 
     // Ruxsat holati
     var permission = await Geolocator.checkPermission();
-    
+
     if (permission == LocationPermission.denied) {
       permission = await Geolocator.requestPermission();
       if (permission == LocationPermission.denied) {
@@ -143,7 +151,7 @@ class LocationService {
   /// Ruxsat so'rash
   Future<LocationStatus> requestPermission() async {
     final permission = await Geolocator.requestPermission();
-    
+
     switch (permission) {
       case LocationPermission.denied:
         _status = LocationStatus.denied;
@@ -160,7 +168,7 @@ class LocationService {
         _status = LocationStatus.unknown;
         break;
     }
-    
+
     return _status;
   }
 
@@ -172,13 +180,13 @@ class LocationService {
         desiredAccuracy: LocationAccuracy.high,
       );
       _positionController.add(_currentPosition!);
-      
+
       // Doimiy yangilanishlar
       const locationSettings = LocationSettings(
         accuracy: LocationAccuracy.high,
         distanceFilter: 10, // 10 metr o'zgarganda yangilash
       );
-      
+
       _positionSubscription = Geolocator.getPositionStream(
         locationSettings: locationSettings,
       ).listen((position) {
@@ -186,9 +194,10 @@ class LocationService {
         _positionController.add(position);
         _checkGeofences(position);
       });
-      
+
       if (kDebugMode) {
-        print('📍 Location: ${_currentPosition?.latitude}, ${_currentPosition?.longitude}');
+        print(
+            '📍 Location: ${_currentPosition?.latitude}, ${_currentPosition?.longitude}');
       }
     } catch (e) {
       if (kDebugMode) print('❌ Location error: $e');
@@ -201,7 +210,7 @@ class LocationService {
       final newStatus = await requestPermission();
       if (newStatus != LocationStatus.granted) return null;
     }
-    
+
     try {
       _currentPosition = await Geolocator.getCurrentPosition(
         desiredAccuracy: LocationAccuracy.high,
@@ -220,7 +229,7 @@ class LocationService {
   ) async {
     try {
       final placemarks = await placemarkFromCoordinates(latitude, longitude);
-      
+
       if (placemarks.isNotEmpty) {
         final place = placemarks.first;
         return AddressInfo(
@@ -245,7 +254,7 @@ class LocationService {
   Future<Position?> getCoordinatesFromAddress(String address) async {
     try {
       final locations = await locationFromAddress(address);
-      
+
       if (locations.isNotEmpty) {
         final loc = locations.first;
         return Position(
@@ -282,7 +291,7 @@ class LocationService {
   /// Joriy joylashuvdan masofani hisoblash (metrda)
   double? distanceFromCurrent(double latitude, double longitude) {
     if (_currentPosition == null) return null;
-    
+
     return calculateDistance(
       _currentPosition!.latitude,
       _currentPosition!.longitude,
@@ -305,7 +314,7 @@ class LocationService {
   /// Geofence qo'shish
   void addGeofence(GeofenceZone zone) {
     _geofences.add(zone);
-    
+
     // Joriy joylashuv bilan tekshirish
     if (_currentPosition != null) {
       _checkSingleGeofence(zone, _currentPosition!);
@@ -333,21 +342,21 @@ class LocationService {
       zone.latitude,
       zone.longitude,
     );
-    
+
     final isInside = distance <= zone.radiusMeters;
     final wasInside = _insideZones.contains(zone.id);
-    
+
     if (isInside && !wasInside) {
       // Zone'ga kirdi
       _insideZones.add(zone.id);
       _geofenceController.add((zone, GeofenceEvent.enter));
-      
+
       if (kDebugMode) print('📍 Entered geofence: ${zone.name}');
     } else if (!isInside && wasInside) {
       // Zone'dan chiqdi
       _insideZones.remove(zone.id);
       _geofenceController.add((zone, GeofenceEvent.exit));
-      
+
       if (kDebugMode) print('📍 Exited geofence: ${zone.name}');
     }
   }

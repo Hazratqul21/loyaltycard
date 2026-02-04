@@ -39,13 +39,13 @@ class LoyaltyCardModel extends HiveObject {
 
   @HiveField(8)
   final bool isActive;
-  
+
   @HiveField(9)
   final String? userId;
-  
+
   @HiveField(10)
   final DateTime lastModifiedAt;
-  
+
   @HiveField(11)
   final String syncStatusString;
 
@@ -67,7 +67,7 @@ class LoyaltyCardModel extends HiveObject {
     this.syncStatusString = 'notSynced',
     this.isEcoFriendly = false,
   });
-  
+
   /// SyncStatus getter
   SyncStatus get syncStatus => SyncStatusExtension.fromString(syncStatusString);
 
@@ -145,5 +145,38 @@ class LoyaltyCardModel extends HiveObject {
       'syncStatus': syncStatusString,
       'isEcoFriendly': isEcoFriendly,
     };
+  }
+
+  /// Nusxa olish (modifikatsiya bilan)
+  LoyaltyCardModel copyWith({
+    String? id,
+    String? storeName,
+    String? storeLogoUrl,
+    int? currentPoints,
+    String? tier,
+    int? colorIndex,
+    DateTime? createdAt,
+    DateTime? lastActivityAt,
+    bool? isActive,
+    String? userId,
+    DateTime? lastModifiedAt,
+    String? syncStatusString,
+    bool? isEcoFriendly,
+  }) {
+    return LoyaltyCardModel(
+      id: id ?? this.id,
+      storeName: storeName ?? this.storeName,
+      storeLogoUrl: storeLogoUrl ?? this.storeLogoUrl,
+      currentPoints: currentPoints ?? this.currentPoints,
+      tier: tier ?? this.tier,
+      colorIndex: colorIndex ?? this.colorIndex,
+      createdAt: createdAt ?? this.createdAt,
+      lastActivityAt: lastActivityAt ?? this.lastActivityAt,
+      isActive: isActive ?? this.isActive,
+      userId: userId ?? this.userId,
+      lastModifiedAt: lastModifiedAt ?? this.lastModifiedAt,
+      syncStatusString: syncStatusString ?? this.syncStatusString,
+      isEcoFriendly: isEcoFriendly ?? this.isEcoFriendly,
+    );
   }
 }

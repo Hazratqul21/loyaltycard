@@ -1,5 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../domain/entities/user_entity.dart';
+import '../../domain/entities/user.dart';
 import '../../domain/repositories/auth_repository.dart';
 import '../../core/services/auth_service.dart';
 import '../../core/services/hive_service.dart';
@@ -10,20 +10,20 @@ class AuthRepositoryImpl implements AuthRepository {
   AuthRepositoryImpl(this._authService);
 
   @override
-  Stream<UserEntity?> get authStateChanges =>
+  Stream<AppUser?> get authStateChanges =>
       _authService.authStateChanges.map((user) {
-        final entity = _mapFirebaseUserToEntity(user);
-        if (entity != null) {
-          _cacheUser(entity);
+        final appUser = _mapFirebaseUserToAppUser(user);
+        if (appUser != null) {
+          _cacheUser(appUser);
         }
-        return entity;
+        return appUser;
       });
 
   @override
-  UserEntity? get currentUser {
+  AppUser? get currentUser {
     final firebaseUser = _authService.currentUser;
     if (firebaseUser != null) {
-      return _mapFirebaseUserToEntity(firebaseUser);
+      return _mapFirebaseUserToAppUser(firebaseUser);
     }
     // Check Hive if Firebase is null (e.g., initial boot or offline)
     final cachedUserData = HiveService.userBox.get('current_user');
@@ -34,10 +34,11 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserEntity?> signInWithEmail(String email, String password) async {
-    final result = await _authService.signInWithEmail(email: email, password: password);
+  Future<AppUser?> signInWithEmail(String email, String password) async {
+    final result =
+        await _authService.signInWithEmail(email: email, password: password);
     if (result.isSuccess && result.data != null) {
-      final user = _mapFirebaseUserToEntity(result.data!);
+      final user = _mapFirebaseUserToAppUser(result.data!);
       if (user != null) _cacheUser(user);
       return user;
     }
@@ -45,14 +46,15 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserEntity?> signUpWithEmail(String email, String password, String name) async {
+  Future<AppUser?> signUpWithEmail(
+      String email, String password, String name) async {
     final result = await _authService.registerWithEmail(
       email: email,
       password: password,
       displayName: name,
     );
     if (result.isSuccess && result.data != null) {
-      final user = _mapFirebaseUserToEntity(result.data!);
+      final user = _mapFirebaseUserToAppUser(result.data!);
       if (user != null) _cacheUser(user);
       return user;
     }
@@ -60,10 +62,10 @@ class AuthRepositoryImpl implements AuthRepository {
   }
 
   @override
-  Future<UserEntity?> signInWithGoogle() async {
+  Future<AppUser?> signInWithGoogle() async {
     final result = await _authService.signInWithGoogle();
     if (result.isSuccess && result.data != null) {
-      final user = _mapFirebaseUserToEntity(result.data!);
+      final user = _mapFirebaseUserToAppUser(result.data!);
       if (user != null) _cacheUser(user);
       return user;
     }
@@ -84,41 +86,54 @@ class AuthRepositoryImpl implements AuthRepository {
     }
   }
 
-  void _cacheUser(UserEntity user) {
-    HiveService.userBox.put('current_user', {
-      'id': user.id,
-      'email': user.email,
-      'displayName': user.displayName,
-      'photoUrl': user.photoUrl,
-      'phoneNumber': user.phoneNumber,
-      'isEmailVerified': user.isEmailVerified,
-    });
+  @override
+  Future<void> verifyPhoneNumber({
+    required String phoneNumber,
+    required Function(String, int?) onCodeSent,
+    required Function(Exception) onVerificationFailed,
+    required Function(Object) onVerificationCompleted,
+    required Function(String) onCodeAutoRetrievalTimeout,
+  }) async {
+    await _authService.verifyPhoneNumber(
+      phoneNumber: phoneNumber,
+      onCodeSent: onCodeSent,
+      onVerificationFailed: (e) => onVerificationFailed(e),
+      onVerificationCompleted: (credential) =>
+          onVerificationCompleted(credential),
+      onCodeAutoRetrievalTimeout: onCodeAutoRetrievalTimeout,
+    );
   }
 
-  UserEntity? _mapFromCache(Map cachedData) {
+  @override
+  Future<AppUser?> signInWithPhoneCode(
+      String verificationId, String smsCode) async {
+    final result = await _authService.signInWithPhoneCode(
+      verificationId: verificationId,
+      smsCode: smsCode,
+    );
+    if (result.isSuccess && result.data != null) {
+      final user = _mapFirebaseUserToAppUser(result.data!);
+      if (user != null) _cacheUser(user);
+      return user;
+    }
+    throw Exception(result.errorMessage ?? 'Phone login failed');
+  }
+
+  void _cacheUser(AppUser user) {
+    HiveService.userBox.put('current_user', user.toJson());
+  }
+
+  AppUser? _mapFromCache(Map cachedData) {
     try {
-      return UserEntity(
-        id: cachedData['id'] ?? '',
-        email: cachedData['email'] ?? '',
-        displayName: cachedData['displayName'],
-        photoUrl: cachedData['photoUrl'],
-        phoneNumber: cachedData['phoneNumber'],
-        isEmailVerified: cachedData['isEmailVerified'] ?? false,
-      );
+      final json = Map<String, dynamic>.from(cachedData);
+      return AppUser.fromJson(json);
     } catch (_) {
       return null;
     }
   }
 
-  UserEntity? _mapFirebaseUserToEntity(User? user) {
+  AppUser? _mapFirebaseUserToAppUser(User? user) {
     if (user == null) return null;
-    return UserEntity(
-      id: user.uid,
-      email: user.email ?? '',
-      displayName: user.displayName,
-      photoUrl: user.photoURL,
-      phoneNumber: user.phoneNumber,
-      isEmailVerified: user.emailVerified,
-    );
+    return AppUser.fromFirebaseUser(user);
   }
 }

@@ -349,7 +349,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
         // Dark overlay with cutout
         Container(
           decoration: BoxDecoration(
-            color: Colors.black.withOpacity(0.5),
+            color: Colors.black.withValues(alpha: 0.5),
           ),
           child: Center(
             child: Container(
@@ -396,13 +396,14 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
                           gradient: LinearGradient(
                             colors: [
                               Colors.transparent,
-                              AppColors.accentColor.withOpacity(0.8),
+                              AppColors.accentColor.withValues(alpha: 0.8),
                               Colors.transparent,
                             ],
                           ),
                           boxShadow: [
                             BoxShadow(
-                              color: AppColors.accentColor.withOpacity(0.5),
+                              color:
+                                  AppColors.accentColor.withValues(alpha: 0.5),
                               blurRadius: 10,
                               spreadRadius: 2,
                             ),
@@ -439,7 +440,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
                   width: 200,
                   height: 200,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryColor.withOpacity(0.1),
+                    color: AppColors.primaryColor.withValues(alpha: 0.1),
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: AppColors.primaryColor,
@@ -478,7 +479,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
             Container(
               padding: const EdgeInsets.all(24),
               decoration: BoxDecoration(
-                color: AppColors.success.withOpacity(0.1),
+                color: AppColors.success.withValues(alpha: 0.1),
                 shape: BoxShape.circle,
               ),
               child: const FaIcon(
@@ -661,7 +662,8 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
                         leading: Container(
                           padding: const EdgeInsets.all(8),
                           decoration: BoxDecoration(
-                            color: AppColors.primaryColor.withOpacity(0.1),
+                            color:
+                                AppColors.primaryColor.withValues(alpha: 0.1),
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: FaIcon(
@@ -716,7 +718,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
             width: 40,
             height: 4,
             decoration: BoxDecoration(
-              color: Colors.grey.withOpacity(0.3),
+              color: Colors.grey.withValues(alpha: 0.3),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -724,7 +726,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: AppColors.primaryColor.withOpacity(0.1),
+              color: AppColors.primaryColor.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
             child: FaIcon(
@@ -790,7 +792,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.withOpacity(0.3),
+                color: Colors.grey.withValues(alpha: 0.3),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),

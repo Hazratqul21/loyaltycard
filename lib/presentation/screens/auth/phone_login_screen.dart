@@ -33,32 +33,37 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
 
   Future<void> _sendCode() async {
     if (!_formKey.currentState!.validate()) return;
+    if (_phoneController.text.length < 9) return;
 
-    final phoneNumber = '+998${_phoneController.text.replaceAll(' ', '')}';
-
-    await ref.read(authProvider.notifier).verifyPhoneNumber(
-      phoneNumber: phoneNumber,
-      onCodeSent: (verificationId, resendToken) {
-        if (mounted) {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (_) => OtpVerifyScreen(
-                verificationId: verificationId,
-                phoneNumber: phoneNumber,
-              ),
-            ),
-          );
-        }
-      },
-      onError: (error) {
-        if (mounted) {
-          ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text(error), backgroundColor: AppColors.error),
-          );
-        }
-      },
-    );
+    await ref.read(authNotifierProvider.notifier).verifyPhoneNumber(
+          phoneNumber: '+998${_phoneController.text}',
+          onCodeSent: (verificationId, resendToken) {
+            if (mounted) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => OtpVerifyScreen(
+                    verificationId: verificationId,
+                    phoneNumber: '+998${_phoneController.text}',
+                  ),
+                ),
+              );
+            }
+          },
+          onVerificationFailed: (e) {
+            if (mounted) {
+              ScaffoldMessenger.of(context).showSnackBar(
+                SnackBar(content: Text('Xatolik: ${e.message}')),
+              );
+            }
+          },
+          onVerificationCompleted: (credential) {
+            // Auto sign-in handled by listener or separate logic if needed
+          },
+          onCodeAutoRetrievalTimeout: (verificationId) {
+            // Timeout handling
+          },
+        );
   }
 
   @override
@@ -80,7 +85,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
               Align(
                 alignment: Alignment.topLeft,
                 child: IconButton(
-                  icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+                  icon:
+                      const Icon(Icons.arrow_back_ios_new, color: Colors.white),
                   onPressed: () => Navigator.pop(context),
                 ),
               ),
@@ -106,7 +112,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                         child: Container(
                           padding: const EdgeInsets.all(AppSizes.paddingLG),
                           decoration: BoxDecoration(
-                            color: Colors.white.withOpacity(0.2),
+                            color: Colors.white.withValues(alpha: 0.1),
                             shape: BoxShape.circle,
                           ),
                           child: const FaIcon(
@@ -135,7 +141,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                         ),
                       ),
                       const SizedBox(height: AppSizes.paddingXXL),
-                      
+
                       // Glass Input
                       GlassmorphicCard(
                         padding: const EdgeInsets.all(AppSizes.paddingLG),
@@ -185,7 +191,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                         ),
                       ),
                       const SizedBox(height: AppSizes.paddingXXL),
-                      
+
                       GradientButton.primary(
                         text: 'Kodni yuborish',
                         isLoading: authState.isLoading,
@@ -197,7 +203,8 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
                         onPressed: () => Navigator.pop(context),
                         child: Text(
                           'Boshqa usul bilan kirish',
-                          style: TextStyle(color: Colors.white.withOpacity(0.7)),
+                          style:
+                              TextStyle(color: Colors.white.withOpacity(0.7)),
                         ),
                       ),
                     ],
