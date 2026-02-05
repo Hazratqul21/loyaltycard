@@ -4,18 +4,19 @@
 /// QR kod subscription entity.
 /// Bir martalik, ko'p martalik, umrbod va obuna QR turlarini boshqarish.
 /// ==========================================================================
+library;
 
 /// QR kod turi
 enum QrType {
   /// Bir martalik - ishlatilgach yaroqsiz bo'ladi
   oneTime,
-  
+
   /// Ko'p martalik - N marta ishlatish mumkin
   multiUse,
-  
+
   /// Umrbod - muddatsiz, cheksiz ishlatish
   lifetime,
-  
+
   /// Obuna - to'lovga bog'liq
   subscription,
 }
@@ -24,10 +25,10 @@ enum QrType {
 enum SubscriptionTier {
   /// Basic tier - asosiy imkoniyatlar
   basic,
-  
+
   /// Premium tier - kengaytirilgan imkoniyatlar
   premium,
-  
+
   /// VIP tier - barcha imkoniyatlar
   vip,
 }
@@ -36,34 +37,34 @@ enum SubscriptionTier {
 class QrSubscription {
   /// Unikal identifikator
   final String id;
-  
+
   /// Bog'langan karta ID
   final String cardId;
-  
+
   /// QR kod turi
   final QrType type;
-  
+
   /// Ishlatish limiti (multiUse uchun)
   final int? usageLimit;
-  
+
   /// Ishlatilgan soni
   final int usageCount;
-  
+
   /// Amal qilish muddati
   final DateTime? expiresAt;
-  
+
   /// Faolmi
   final bool isActive;
-  
+
   /// Obuna darajasi (subscription turi uchun)
   final SubscriptionTier? tier;
-  
+
   /// Yaratilgan sana
   final DateTime createdAt;
-  
+
   /// Oxirgi ishlatilgan sana
   final DateTime? lastUsedAt;
-  
+
   /// QR kod ma'lumotlari (encoded)
   final String qrData;
 
@@ -85,21 +86,21 @@ class QrSubscription {
   bool get isValid {
     // Faol bo'lishi kerak
     if (!isActive) return false;
-    
+
     switch (type) {
       case QrType.oneTime:
         // Bir martalik - faqat bir marta ishlatilgan bo'lmasligi kerak
         return usageCount == 0;
-        
+
       case QrType.multiUse:
         // Ko'p martalik - limit ichida bo'lishi kerak
         if (usageLimit == null) return true;
         return usageCount < usageLimit!;
-        
+
       case QrType.lifetime:
         // Umrbod - har doim yaroqli
         return true;
-        
+
       case QrType.subscription:
         // Obuna - muddati tugamagan bo'lishi kerak
         if (expiresAt == null) return true;
@@ -135,7 +136,7 @@ class QrSubscription {
           return 'Faol';
       }
     }
-    
+
     switch (type) {
       case QrType.oneTime:
         return 'Bir martalik';
@@ -213,16 +214,16 @@ class QrSubscription {
       type: QrType.values.byName(json['type'] as String),
       usageLimit: json['usageLimit'] as int?,
       usageCount: json['usageCount'] as int? ?? 0,
-      expiresAt: json['expiresAt'] != null 
-          ? DateTime.parse(json['expiresAt'] as String) 
+      expiresAt: json['expiresAt'] != null
+          ? DateTime.parse(json['expiresAt'] as String)
           : null,
       isActive: json['isActive'] as bool? ?? true,
-      tier: json['tier'] != null 
-          ? SubscriptionTier.values.byName(json['tier'] as String) 
+      tier: json['tier'] != null
+          ? SubscriptionTier.values.byName(json['tier'] as String)
           : null,
       createdAt: DateTime.parse(json['createdAt'] as String),
-      lastUsedAt: json['lastUsedAt'] != null 
-          ? DateTime.parse(json['lastUsedAt'] as String) 
+      lastUsedAt: json['lastUsedAt'] != null
+          ? DateTime.parse(json['lastUsedAt'] as String)
           : null,
       qrData: json['qrData'] as String,
     );
@@ -231,11 +232,13 @@ class QrSubscription {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is QrSubscription && runtimeType == other.runtimeType && id == other.id;
+      other is QrSubscription &&
+          runtimeType == other.runtimeType &&
+          id == other.id;
 
   @override
   int get hashCode => id.hashCode;
-  
+
   @override
   String toString() {
     return 'QrSubscription(id: $id, type: ${type.name}, isValid: $isValid)';

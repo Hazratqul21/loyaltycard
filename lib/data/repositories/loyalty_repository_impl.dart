@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// LoyaltyRepository implementatsiyasi.
 /// ==========================================================================
+library;
 
 import 'package:flutter/foundation.dart';
 import '../../domain/entities/loyalty_card.dart';

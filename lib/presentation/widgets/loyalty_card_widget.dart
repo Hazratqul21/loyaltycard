@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Bitta loyalty karta display widgeti.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -16,10 +17,10 @@ import '../../domain/entities/loyalty_card.dart';
 class LoyaltyCardWidget extends StatelessWidget {
   /// Karta ma'lumotlari
   final LoyaltyCard card;
-  
+
   /// Bosish hodisasi
   final VoidCallback? onTap;
-  
+
   /// Kompakt ko'rinish
   final bool isCompact;
 
@@ -63,7 +64,7 @@ class LoyaltyCardWidget extends StatelessWidget {
             children: [
               // Dekorativ elementlar
               _buildDecorations(),
-              
+
               // Glassmorphism overlay
               BackdropFilter(
                 filter: ImageFilter.blur(sigmaX: 0, sigmaY: 0),
@@ -80,7 +81,7 @@ class LoyaltyCardWidget extends StatelessWidget {
                   ),
                 ),
               ),
-              
+
               // Kontent
               Padding(
                 padding: const EdgeInsets.all(AppSizes.paddingLG),
@@ -139,24 +140,25 @@ class LoyaltyCardWidget extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
             Expanded(
-                child: Row(
-                  children: [
-                    Text(
-                      card.storeName,
-                      style: const TextStyle(
-                        fontSize: AppSizes.fontLG,
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                      overflow: TextOverflow.ellipsis,
+              child: Row(
+                children: [
+                  Text(
+                    card.storeName,
+                    style: const TextStyle(
+                      fontSize: AppSizes.fontLG,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white,
                     ),
-                    if (card.isEcoFriendly) ...[
-                      const SizedBox(width: 6),
-                      const FaIcon(FontAwesomeIcons.leaf, color: AppColors.success, size: 12),
-                    ],
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                  if (card.isEcoFriendly) ...[
+                    const SizedBox(width: 6),
+                    const FaIcon(FontAwesomeIcons.leaf,
+                        color: AppColors.success, size: 12),
                   ],
-                ),
+                ],
               ),
+            ),
             Container(
               padding: const EdgeInsets.symmetric(
                 horizontal: AppSizes.paddingSM,
@@ -168,14 +170,15 @@ class LoyaltyCardWidget extends StatelessWidget {
               ),
               child: Row(
                 children: [
-                   if (card.isEcoFriendly) ...[
+                  if (card.isEcoFriendly) ...[
                     Container(
                       padding: const EdgeInsets.all(4),
                       decoration: BoxDecoration(
                         color: Colors.white.withOpacity(0.2),
                         shape: BoxShape.circle,
                       ),
-                      child: const FaIcon(FontAwesomeIcons.leaf, color: AppColors.success, size: 10),
+                      child: const FaIcon(FontAwesomeIcons.leaf,
+                          color: AppColors.success, size: 10),
                     ),
                     const SizedBox(width: 8),
                   ],
@@ -192,9 +195,9 @@ class LoyaltyCardWidget extends StatelessWidget {
             ),
           ],
         ),
-        
+
         const Spacer(),
-        
+
         // Pastki qism - ballar
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -268,7 +271,7 @@ class LoyaltyCardWidget extends StatelessWidget {
           ),
         ),
         const SizedBox(width: AppSizes.paddingMD),
-        
+
         Expanded(
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
@@ -294,7 +297,7 @@ class LoyaltyCardWidget extends StatelessWidget {
             ],
           ),
         ),
-        
+
         const FaIcon(
           FontAwesomeIcons.chevronRight,
           color: Colors.white70,

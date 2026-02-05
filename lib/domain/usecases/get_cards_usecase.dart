@@ -1,6 +1,6 @@
 import '../repositories/loyalty_repository.dart';
 import '../entities/loyalty_card.dart';
-import '../../core/utils/extensions.dart'; // Yoki Either tipidagi return uchun
+// Yoki Either tipidagi return uchun
 
 class GetCardsUseCase {
   final LoyaltyRepository repository;

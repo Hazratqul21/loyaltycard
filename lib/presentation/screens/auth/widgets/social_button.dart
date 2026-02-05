@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Ijtimoiy tarmoqlar bilan kirish tugmalari.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -12,22 +13,22 @@ import '../../../../core/constants/app_sizes.dart';
 class SocialSignInButton extends StatelessWidget {
   /// Tugma matni
   final String text;
-  
+
   /// Ikonka
   final IconData icon;
-  
+
   /// Ikonka rangi
   final Color iconColor;
-  
+
   /// Fon rangi
   final Color backgroundColor;
-  
+
   /// Matn rangi
   final Color textColor;
-  
+
   /// Bosish hodisasi
   final VoidCallback? onPressed;
-  
+
   /// Yuklanmoqda
   final bool isLoading;
 
@@ -119,7 +120,7 @@ class OrDivider extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final color = Theme.of(context).dividerColor;
-    
+
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingMD),
       child: Row(
@@ -146,7 +147,7 @@ class OrDivider extends StatelessWidget {
 class SocialSignInSection extends StatelessWidget {
   /// Google bosish
   final VoidCallback? onGooglePressed;
-  
+
   /// Google yuklanmoqda
   final bool isGoogleLoading;
 
@@ -162,7 +163,7 @@ class SocialSignInSection extends StatelessWidget {
       children: [
         const OrDivider(),
         const SizedBox(height: AppSizes.paddingSM),
-        
+
         // Google bilan kirish
         SocialSignInButton.google(
           onPressed: onGooglePressed,

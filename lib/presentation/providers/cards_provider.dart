@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Riverpod providerlar - kartalar, tranzaksiyalar, sovg'alar.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/datasources/local_datasource.dart';
@@ -91,9 +92,9 @@ class CardsNotifier extends StateNotifier<CardsState> {
   Future<void> addPoints(String cardId, int points) async {
     final cardIndex = state.cards.indexWhere((c) => c.id == cardId);
     if (cardIndex == -1) return;
-    
+
     final card = state.cards[cardIndex];
-    
+
     // Eco-bonus (Feature 14)
     int finalPoints = points;
     if (card.isEcoFriendly) {
@@ -190,7 +191,8 @@ final transactionsProvider =
 });
 
 /// Oxirgi tranzaksiyalar provider
-final recentTransactionsProvider = FutureProvider<List<Transaction>>((ref) async {
+final recentTransactionsProvider =
+    FutureProvider<List<Transaction>>((ref) async {
   final repository = ref.watch(loyaltyRepositoryProvider);
   return await repository.getRecentTransactions(5);
 });
@@ -250,7 +252,8 @@ class RewardsNotifier extends StateNotifier<RewardsState> {
 }
 
 /// Rewards notifier provider
-final rewardsProvider = StateNotifierProvider<RewardsNotifier, RewardsState>((ref) {
+final rewardsProvider =
+    StateNotifierProvider<RewardsNotifier, RewardsState>((ref) {
   final repository = ref.watch(loyaltyRepositoryProvider);
   return RewardsNotifier(repository);
 });

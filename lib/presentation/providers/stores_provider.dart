@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Do'konlar uchun Riverpod providerlar.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:geolocator/geolocator.dart';
@@ -40,13 +41,20 @@ List<Store> _getDemoStores() {
       linkedCardId: 'card_1',
       tags: ['supermarket', 'oziq-ovqat', 'chegirma'],
       workingHours: [
-        const WorkingHours(dayOfWeek: 'Monday', openTime: '08:00', closeTime: '22:00'),
-        const WorkingHours(dayOfWeek: 'Tuesday', openTime: '08:00', closeTime: '22:00'),
-        const WorkingHours(dayOfWeek: 'Wednesday', openTime: '08:00', closeTime: '22:00'),
-        const WorkingHours(dayOfWeek: 'Thursday', openTime: '08:00', closeTime: '22:00'),
-        const WorkingHours(dayOfWeek: 'Friday', openTime: '08:00', closeTime: '22:00'),
-        const WorkingHours(dayOfWeek: 'Saturday', openTime: '09:00', closeTime: '21:00'),
-        const WorkingHours(dayOfWeek: 'Sunday', openTime: '09:00', closeTime: '20:00'),
+        const WorkingHours(
+            dayOfWeek: 'Monday', openTime: '08:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Tuesday', openTime: '08:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Wednesday', openTime: '08:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Thursday', openTime: '08:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Friday', openTime: '08:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Saturday', openTime: '09:00', closeTime: '21:00'),
+        const WorkingHours(
+            dayOfWeek: 'Sunday', openTime: '09:00', closeTime: '20:00'),
       ],
     ),
     Store(
@@ -77,13 +85,20 @@ List<Store> _getDemoStores() {
       linkedCardId: 'card_3',
       tags: ['restoran', 'milliy', 'kofe'],
       workingHours: [
-        const WorkingHours(dayOfWeek: 'Monday', openTime: '10:00', closeTime: '23:00'),
-        const WorkingHours(dayOfWeek: 'Tuesday', openTime: '10:00', closeTime: '23:00'),
-        const WorkingHours(dayOfWeek: 'Wednesday', openTime: '10:00', closeTime: '23:00'),
-        const WorkingHours(dayOfWeek: 'Thursday', openTime: '10:00', closeTime: '23:00'),
-        const WorkingHours(dayOfWeek: 'Friday', openTime: '10:00', closeTime: '00:00'),
-        const WorkingHours(dayOfWeek: 'Saturday', openTime: '10:00', closeTime: '00:00'),
-        const WorkingHours(dayOfWeek: 'Sunday', openTime: '11:00', closeTime: '22:00'),
+        const WorkingHours(
+            dayOfWeek: 'Monday', openTime: '10:00', closeTime: '23:00'),
+        const WorkingHours(
+            dayOfWeek: 'Tuesday', openTime: '10:00', closeTime: '23:00'),
+        const WorkingHours(
+            dayOfWeek: 'Wednesday', openTime: '10:00', closeTime: '23:00'),
+        const WorkingHours(
+            dayOfWeek: 'Thursday', openTime: '10:00', closeTime: '23:00'),
+        const WorkingHours(
+            dayOfWeek: 'Friday', openTime: '10:00', closeTime: '00:00'),
+        const WorkingHours(
+            dayOfWeek: 'Saturday', openTime: '10:00', closeTime: '00:00'),
+        const WorkingHours(
+            dayOfWeek: 'Sunday', openTime: '11:00', closeTime: '22:00'),
       ],
     ),
     Store(
@@ -150,7 +165,7 @@ class StoresNotifier extends StateNotifier<StoresState> {
   /// Do'konlarni yuklash
   Future<void> loadStores() async {
     state = state.copyWith(isLoading: true);
-    
+
     try {
       // Demo data
       final stores = _getDemoStores();
@@ -170,7 +185,8 @@ class StoresNotifier extends StateNotifier<StoresState> {
 }
 
 /// Stores provider
-final storesProvider = StateNotifierProvider<StoresNotifier, StoresState>((ref) {
+final storesProvider =
+    StateNotifierProvider<StoresNotifier, StoresState>((ref) {
   return StoresNotifier(ref);
 });
 
@@ -179,15 +195,15 @@ final nearbyStoresProvider = Provider<List<(Store, double?)>>((ref) {
   final storesState = ref.watch(storesProvider);
   final positionAsync = ref.watch(currentPositionProvider);
   final locationService = ref.watch(locationServiceProvider);
-  
+
   final stores = storesState.stores;
-  
+
   return positionAsync.when(
     data: (position) {
       if (position == null) {
         return stores.map((s) => (s, null as double?)).toList();
       }
-      
+
       // Masofani hisoblash va tartiblash
       final storesWithDistance = stores.map((store) {
         final distance = locationService.distanceFromCurrent(
@@ -196,14 +212,14 @@ final nearbyStoresProvider = Provider<List<(Store, double?)>>((ref) {
         );
         return (store, distance);
       }).toList();
-      
+
       // Masofaga qarab tartiblash
       storesWithDistance.sort((a, b) {
         if (a.$2 == null) return 1;
         if (b.$2 == null) return -1;
         return a.$2!.compareTo(b.$2!);
       });
-      
+
       return storesWithDistance;
     },
     loading: () => stores.map((s) => (s, null as double?)).toList(),

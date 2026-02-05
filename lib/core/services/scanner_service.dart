@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Barcode va NFC skanerlash xizmati.
 /// ==========================================================================
+library;
 
 import 'dart:async';
 import 'dart:io';
@@ -36,7 +37,7 @@ class ScanResult {
     this.format,
     Map<String, dynamic>? metadata,
   })  : timestamp = DateTime.now(),
-        this.metadata = metadata;
+        metadata = metadata;
 
   /// Karta ID sifatida parse qilish
   String? get cardId {

@@ -3,8 +3,8 @@
 /// ==========================================================================
 /// Enhanced QR/Barcode skaner sahifasi - NFC va kamera.
 /// ==========================================================================
+library;
 
-import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -16,7 +16,6 @@ import '../../../core/services/qr_service.dart';
 import '../../../core/services/scanner_service.dart';
 import '../../../domain/entities/loyalty_card.dart';
 import '../../providers/cards_provider.dart';
-import '../../widgets/glassmorphic_card.dart';
 import '../../widgets/gradient_button.dart';
 
 /// Scan mode
@@ -52,7 +51,7 @@ class _ScannerScreenState extends ConsumerState<ScannerScreen>
   bool _hasScanned = false;
   String? _scannedData;
   bool _isTorchOn = false;
-  List<ScanResult> _scanHistory = [];
+  final List<ScanResult> _scanHistory = [];
 
   @override
   void initState() {

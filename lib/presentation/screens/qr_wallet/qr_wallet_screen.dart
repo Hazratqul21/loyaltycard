@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// QR hamyon sahifasi - foydalanuvchi QR kodi.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -107,9 +108,8 @@ class _QrWalletScreenState extends ConsumerState<QrWalletScreen>
                         onTap: _isFullScreen ? null : _toggleFullScreen,
                         child: GlassmorphicCard(
                           padding: const EdgeInsets.all(AppSizes.paddingLG),
-                          gradientColors: _isFullScreen
-                              ? null
-                              : AppColors.primaryGradient,
+                          gradientColors:
+                              _isFullScreen ? null : AppColors.primaryGradient,
                           child: Column(
                             children: [
                               if (!_isFullScreen) ...[
@@ -137,10 +137,11 @@ class _QrWalletScreenState extends ConsumerState<QrWalletScreen>
                                 ),
                                 const SizedBox(height: AppSizes.paddingMD),
                               ],
-                              
+
                               // QR kod
                               Container(
-                                padding: const EdgeInsets.all(AppSizes.paddingMD),
+                                padding:
+                                    const EdgeInsets.all(AppSizes.paddingMD),
                                 decoration: BoxDecoration(
                                   color: Colors.white,
                                   borderRadius: BorderRadius.circular(
@@ -162,7 +163,7 @@ class _QrWalletScreenState extends ConsumerState<QrWalletScreen>
                                   ),
                                 ),
                               ),
-                              
+
                               if (!_isFullScreen) ...[
                                 const SizedBox(height: AppSizes.paddingMD),
                                 Container(
@@ -221,7 +222,8 @@ class _QrWalletScreenState extends ConsumerState<QrWalletScreen>
                         isDarkMode,
                         icon: FontAwesomeIcons.two,
                         title: 'Ballarni yig\'ing',
-                        description: 'Har bir xaridda ballar avtomatik yig\'iladi',
+                        description:
+                            'Har bir xaridda ballar avtomatik yig\'iladi',
                       ),
                       const SizedBox(height: AppSizes.paddingMD),
                       _buildInstructionCard(
@@ -229,7 +231,8 @@ class _QrWalletScreenState extends ConsumerState<QrWalletScreen>
                         isDarkMode,
                         icon: FontAwesomeIcons.three,
                         title: 'Sovg\'alar oling',
-                        description: 'Ballarni chegirmalar va sovg\'alarga ayirboshlang',
+                        description:
+                            'Ballarni chegirmalar va sovg\'alarga ayirboshlang',
                       ),
 
                       const SizedBox(height: AppSizes.paddingXL),

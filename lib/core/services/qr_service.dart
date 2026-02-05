@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// QR kod yaratish va skanerlash uchun helper service.
 /// ==========================================================================
+library;
 
 import 'dart:convert';
 import 'package:uuid/uuid.dart';
@@ -112,7 +113,7 @@ class QrService {
   // ==================== Subscription QR Methods ====================
 
   /// Subscription QR kod yaratish
-  /// 
+  ///
   /// [type] - QR kod turi (oneTime, multiUse, lifetime, subscription)
   /// [cardId] - bog'langan karta ID
   /// [usageLimit] - multiUse uchun ishlatish limiti
@@ -142,10 +143,10 @@ class QrService {
   }
 
   /// Subscription QR kodni tekshirish
-  /// 
+  ///
   /// [qrString] - QR kod string
   /// [usageCount] - joriy ishlatilgan soni
-  /// 
+  ///
   /// Returns: {isValid: bool, reason: String?, subscriptionType: String?}
   static Map<String, dynamic> validateSubscriptionQr(
     String qrString, {
@@ -153,7 +154,7 @@ class QrService {
   }) {
     try {
       final data = QrCodeData.fromQrString(qrString);
-      
+
       if (data.type != 'subscription' || data.metadata == null) {
         return {
           'isValid': false,
@@ -163,7 +164,7 @@ class QrService {
 
       final metadata = data.metadata!;
       final subscriptionType = metadata['subscriptionType'] as String?;
-      
+
       // Type bo'yicha validatsiya
       switch (subscriptionType) {
         case 'oneTime':
@@ -175,7 +176,7 @@ class QrService {
             };
           }
           break;
-          
+
         case 'multiUse':
           final limit = metadata['usageLimit'] as int?;
           if (limit != null && usageCount >= limit) {
@@ -186,7 +187,7 @@ class QrService {
             };
           }
           break;
-          
+
         case 'subscription':
           final expiresAtStr = metadata['expiresAt'] as String?;
           if (expiresAtStr != null) {
@@ -200,11 +201,11 @@ class QrService {
             }
           }
           break;
-          
+
         case 'lifetime':
           // Umrbod - har doim yaroqli
           break;
-          
+
         default:
           return {
             'isValid': false,
@@ -239,4 +240,3 @@ class QrService {
     }
   }
 }
-

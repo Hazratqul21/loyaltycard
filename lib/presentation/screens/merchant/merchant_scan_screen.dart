@@ -3,15 +3,14 @@
 /// ==========================================================================
 /// Sotuvchilar uchun mijoz QR-kodini skanerlash ekrani.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mobile_scanner/mobile_scanner.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants/app_colors.dart';
-import '../../../core/constants/app_sizes.dart';
 import '../../providers/merchant_provider.dart';
-import '../../widgets/glassmorphic_card.dart';
 
 class MerchantScanScreen extends ConsumerStatefulWidget {
   const MerchantScanScreen({super.key});
@@ -72,7 +71,7 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
 
   Widget _buildOverlay() {
     return Container(
-      decoration: ShapeDecoration(
+      decoration: const ShapeDecoration(
         shape: QrScannerOverlayShape(
           borderColor: AppColors.primaryColor,
           borderRadius: 20,
@@ -135,7 +134,8 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
   }
 
   void _showAwardPointsSheet(String customerId) {
-    final TextEditingController pointsController = TextEditingController(text: '10');
+    final TextEditingController pointsController =
+        TextEditingController(text: '10');
     final TextEditingController amountController = TextEditingController();
 
     showModalBottomSheet(
@@ -166,14 +166,14 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
                 style: const TextStyle(fontSize: 12, color: Colors.grey),
               ),
               const SizedBox(height: 20),
-              
               TextField(
                 controller: amountController,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Xarid summasi (ixtiyoriy)',
                   prefixIcon: const Icon(FontAwesomeIcons.tag, size: 16),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
               ),
               const SizedBox(height: 16),
@@ -183,16 +183,17 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
                 decoration: InputDecoration(
                   labelText: 'Beriladigan ballar',
                   prefixIcon: const Icon(FontAwesomeIcons.coins, size: 16),
-                  border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+                  border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12)),
                 ),
               ),
-              
               const SizedBox(height: 24),
               SizedBox(
                 width: double.infinity,
                 height: 54,
                 child: ElevatedButton(
-                  onPressed: () => _submitPoints(customerId, pointsController.text, amountController.text),
+                  onPressed: () => _submitPoints(
+                      customerId, pointsController.text, amountController.text),
                   child: const Text('Tasdiqlash'),
                 ),
               ),
@@ -209,7 +210,8 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
     });
   }
 
-  Future<void> _submitPoints(String customerId, String pointsStr, String amountStr) async {
+  Future<void> _submitPoints(
+      String customerId, String pointsStr, String amountStr) async {
     final points = int.tryParse(pointsStr) ?? 0;
     final amount = double.tryParse(amountStr);
 
@@ -220,12 +222,13 @@ class _MerchantScanScreenState extends ConsumerState<MerchantScanScreen> {
       return;
     }
 
-    final success = await ref.read(merchantNotifierProvider.notifier).awardPoints(
-      customerId: customerId,
-      storeId: 'demo_store_1',
-      points: points,
-      amount: amount,
-    );
+    final success =
+        await ref.read(merchantNotifierProvider.notifier).awardPoints(
+              customerId: customerId,
+              storeId: 'demo_store_1',
+              points: points,
+              amount: amount,
+            );
 
     if (mounted) {
       Navigator.pop(context); // Close sheet
@@ -249,7 +252,7 @@ class QrScannerOverlayShape extends ShapeBorder {
   final double borderLength;
   final double cutOutSize;
 
-  QrScannerOverlayShape({
+  const QrScannerOverlayShape({
     this.borderColor = Colors.white,
     this.borderWidth = 10,
     this.borderRadius = 0,
@@ -291,13 +294,16 @@ class QrScannerOverlayShape extends ShapeBorder {
       Path.combine(
         PathOperation.difference,
         Path()..addRect(rect),
-        Path()..addRRect(RRect.fromRectAndRadius(cutOutRect, Radius.circular(borderRadius))),
+        Path()
+          ..addRRect(RRect.fromRectAndRadius(
+              cutOutRect, Radius.circular(borderRadius))),
       ),
       backgroundPaint,
     );
 
     // Draw corners
-    final boxRRect = RRect.fromRectAndRadius(cutOutRect, Radius.circular(borderRadius));
+    final boxRRect =
+        RRect.fromRectAndRadius(cutOutRect, Radius.circular(borderRadius));
     final cornerPath = Path()
       // Top left
       ..moveTo(boxRRect.left, boxRRect.top + borderLength)
@@ -320,5 +326,5 @@ class QrScannerOverlayShape extends ShapeBorder {
   }
 
   @override
-  ShapeBorder scale(double t) => QrScannerOverlayShape();
+  ShapeBorder scale(double t) => const QrScannerOverlayShape();
 }

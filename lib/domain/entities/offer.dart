@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Maxsus takliflar (Offers) domain entity.
 /// ==========================================================================
+library;
 
 class Offer {
   final String id;
@@ -12,11 +13,11 @@ class Offer {
   final String storeId;
   final String storeName;
   final String category;
-  
+
   /// Qaysi tierlar uchun amal qilishi (e.g. ['Silver', 'Gold', 'Platinum'])
   /// Agar bo'sh bo'lsa barcha uchun.
   final List<String> applicableTiers;
-  
+
   final DateTime expiresAt;
   final double? discountPercentage;
   final int? bonusPoints;

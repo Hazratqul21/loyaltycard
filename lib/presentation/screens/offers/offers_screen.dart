@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Shaxsiy takliflar va aksiyalar tasmasi.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -143,7 +144,7 @@ class OffersScreen extends ConsumerWidget {
                     children: [
                       Text(
                         offer.storeName,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: AppColors.primaryColor,
                           fontWeight: FontWeight.w600,
                           fontSize: 12,

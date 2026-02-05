@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Hamkorlar tarmog'i va ballarni ayirboshlash xizmati.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -36,10 +37,26 @@ class ExchangeRate {
 
 class PartnerNetworkService {
   static final List<PartnerStore> partners = [
-    const PartnerStore(id: 'korzinka', name: 'Korzinka', logoUrl: 'assets/logos/korzinka.png', baseRate: 1.0),
-    const PartnerStore(id: 'makro', name: 'Makro', logoUrl: 'assets/logos/makro.png', baseRate: 0.9),
-    const PartnerStore(id: 'uzum', name: 'Uzum Market', logoUrl: 'assets/logos/uzum.png', baseRate: 1.2),
-    const PartnerStore(id: 'evos', name: 'EVOS', logoUrl: 'assets/logos/evos.png', baseRate: 0.5),
+    const PartnerStore(
+        id: 'korzinka',
+        name: 'Korzinka',
+        logoUrl: 'assets/logos/korzinka.png',
+        baseRate: 1.0),
+    const PartnerStore(
+        id: 'makro',
+        name: 'Makro',
+        logoUrl: 'assets/logos/makro.png',
+        baseRate: 0.9),
+    const PartnerStore(
+        id: 'uzum',
+        name: 'Uzum Market',
+        logoUrl: 'assets/logos/uzum.png',
+        baseRate: 1.2),
+    const PartnerStore(
+        id: 'evos',
+        name: 'EVOS',
+        logoUrl: 'assets/logos/evos.png',
+        baseRate: 0.5),
   ];
 
   /// Ayirboshlash kursini hisoblash
@@ -47,7 +64,7 @@ class PartnerNetworkService {
   double getExchangeRate(String fromId, String toId) {
     final fromStore = partners.firstWhere((p) => p.id == fromId);
     final toStore = partners.firstWhere((p) => p.id == toId);
-    
+
     // Soddaroq formula: baseRate'lar nisbati
     return fromStore.baseRate / toStore.baseRate;
   }
@@ -59,4 +76,5 @@ class PartnerNetworkService {
   }
 }
 
-final partnerNetworkServiceProvider = Provider((ref) => PartnerNetworkService());
+final partnerNetworkServiceProvider =
+    Provider((ref) => PartnerNetworkService());

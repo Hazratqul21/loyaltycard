@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Transaction domain entity.
 /// ==========================================================================
+library;
 
 import 'sync_status.dart';
 
@@ -10,6 +11,7 @@ import 'sync_status.dart';
 enum TransactionType {
   /// Ball yig'ish
   earn,
+
   /// Ball sarflash
   spend,
 }
@@ -18,34 +20,34 @@ enum TransactionType {
 class Transaction {
   /// Tranzaksiyaning unikal identifikatori
   final String id;
-  
+
   /// Foydalanuvchi ID (Firebase UID)
   final String? userId;
-  
+
   /// Bog'liq loyalty karta ID
   final String cardId;
-  
+
   /// Do'kon nomi
   final String storeName;
-  
+
   /// Xarid summasi (agar mavjud bo'lsa)
   final double? amount;
-  
+
   /// Ball miqdori
   final int points;
-  
+
   /// Tranzaksiya turi (earn yoki spend)
   final TransactionType type;
-  
+
   /// Tranzaksiya sanasi
   final DateTime date;
-  
+
   /// Qo'shimcha tavsif
   final String? description;
-  
+
   /// Oxirgi o'zgartirilgan vaqt (sync uchun)
   final DateTime lastModifiedAt;
-  
+
   /// Sinxronizatsiya holati
   final SyncStatus syncStatus;
 
@@ -96,7 +98,7 @@ class Transaction {
   String get pointsDisplay {
     return type == TransactionType.earn ? '+$points' : '-$points';
   }
-  
+
   /// O'zgartirilgan nusxa yaratish (sync uchun)
   Transaction markAsModified() {
     return copyWith(

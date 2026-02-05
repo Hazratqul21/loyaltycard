@@ -4,6 +4,7 @@
 /// FlutterFire CLI tomonidan generatsiya qilingan Firebase konfiguratsiya fayli.
 /// ILTIMOS: Bu faylni haqiqiy Firebase Console qiymatlari bilan yangilang.
 /// ==========================================================================
+library;
 
 import 'package:firebase_core/firebase_core.dart' show FirebaseOptions;
 import 'package:flutter/foundation.dart'
@@ -11,7 +12,7 @@ import 'package:flutter/foundation.dart'
 
 /// Default Firebase options for the current platform.
 /// Muhim: Bu faylni Firebase Console dan olingan haqiqiy qiymatlar bilan almashtiring.
-/// 
+///
 /// Quyidagi buyruqni ishga tushiring:
 /// ```bash
 /// flutterfire configure
@@ -94,5 +95,4 @@ class DefaultFirebaseOptions {
     storageBucket: 'loyalty-card-e5c91.firebasestorage.app',
     measurementId: 'G-MMCJ77K36H',
   );
-
 }

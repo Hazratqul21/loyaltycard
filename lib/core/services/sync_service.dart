@@ -4,9 +4,9 @@
 /// Hive va Firestore o'rtasida ma'lumotlarni sinxronlashtirish xizmati.
 /// Offline-first arxitektura bilan.
 /// ==========================================================================
+library;
 
 import 'dart:async';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import '../../data/datasources/firebase_datasource.dart';
 import '../../data/datasources/local_datasource.dart';

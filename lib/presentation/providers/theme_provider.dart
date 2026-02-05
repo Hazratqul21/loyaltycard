@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Tema rejimini boshqarish uchun provider.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -66,7 +67,8 @@ class ThemeModeNotifier extends StateNotifier<ThemeMode> {
 }
 
 /// Theme mode provider
-final themeModeProvider = StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
+final themeModeProvider =
+    StateNotifierProvider<ThemeModeNotifier, ThemeMode>((ref) {
   return ThemeModeNotifier();
 });
 

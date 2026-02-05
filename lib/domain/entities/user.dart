@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Foydalanuvchi domain entity.
 /// ==========================================================================
+library;
 
 import 'package:firebase_auth/firebase_auth.dart' show User;
 
@@ -10,8 +11,10 @@ import 'package:firebase_auth/firebase_auth.dart' show User;
 enum UserRole {
   /// Oddiy mijoz
   customer,
+
   /// Do'kon sotuvchisi/egasi
   merchant,
+
   /// Admin
   admin,
 }
@@ -20,22 +23,22 @@ enum UserRole {
 class AppUser {
   /// Firebase UID
   final String uid;
-  
+
   /// Email manzili
   final String email;
-  
+
   /// Ko'rsatiladigan ism
   final String? displayName;
-  
+
   /// Profil rasmi URL
   final String? photoUrl;
-  
+
   /// Ro'yxatdan o'tgan sana
   final DateTime createdAt;
-  
+
   /// Oxirgi kirish sanasi
   final DateTime lastLoginAt;
-  
+
   /// Email tasdiqlangan
   final bool emailVerified;
 
@@ -85,7 +88,7 @@ class AppUser {
   String get initials {
     final name = displayNameOrEmail;
     if (name.length < 2) return name.toUpperCase();
-    
+
     final parts = name.split(' ');
     if (parts.length >= 2) {
       return '${parts[0][0]}${parts[1][0]}'.toUpperCase();
@@ -168,7 +171,8 @@ class AppUser {
   }
 
   /// Firebase User dan AppUser ga o'girish
-  static AppUser fromFirebaseUser(User user, {String? referralCode, String? referredBy}) {
+  static AppUser fromFirebaseUser(User user,
+      {String? referralCode, String? referredBy}) {
     return AppUser(
       uid: user.uid,
       email: user.email ?? '',

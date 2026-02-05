@@ -32,12 +32,14 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
             _emailController.text.trim(),
             _passwordController.text.trim(),
           );
+      if (!mounted) return;
       _checkError();
     }
   }
 
   void _handleGoogleLogin() async {
     await ref.read(authNotifierProvider.notifier).signInWithGoogle();
+    if (!mounted) return;
     _checkError();
   }
 
@@ -116,8 +118,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  validator: (value) =>
-                      (value?.contains('@') ?? false) ? null : l10n.get('error_invalid_email'),
+                  validator: (value) => (value?.contains('@') ?? false)
+                      ? null
+                      : l10n.get('error_invalid_email'),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -128,7 +131,8 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     suffixIcon: TextButton(
                       onPressed: () => Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (_) => const ForgotPasswordScreen()),
+                        MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordScreen()),
                       ),
                       child: Text(l10n.get('forgot_password')),
                     ),
@@ -137,8 +141,9 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                     ),
                   ),
                   obscureText: true,
-                  validator: (value) =>
-                      (value?.length ?? 0) >= 6 ? null : l10n.get('error_weak_pass'),
+                  validator: (value) => (value?.length ?? 0) >= 6
+                      ? null
+                      : l10n.get('error_weak_pass'),
                 ),
                 const SizedBox(height: 24),
                 ElevatedButton(

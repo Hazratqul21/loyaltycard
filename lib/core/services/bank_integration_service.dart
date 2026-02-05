@@ -3,10 +3,10 @@
 /// ==========================================================================
 /// Bank kartalaridan cashbacklarni simulyatsiya qilish va ball berish.
 /// ==========================================================================
+library;
 
 import 'dart:async';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/transaction.dart';
 
 class BankCard {
   final String id;
@@ -35,12 +35,13 @@ class BankIntegrationService {
   }
 
   /// Bank xaridi simulatsiyasi
-  Future<Map<String, dynamic>> simulatePurchase(String pan, double amount, String storeName) async {
+  Future<Map<String, dynamic>> simulatePurchase(
+      String pan, double amount, String storeName) async {
     // 1 sekund kutish
     await Future.delayed(const Duration(seconds: 1));
-    
+
     final points = calculateCashback(amount);
-    
+
     return {
       'success': true,
       'pointsEarned': points,
@@ -51,4 +52,5 @@ class BankIntegrationService {
   }
 }
 
-final bankIntegrationServiceProvider = Provider((ref) => BankIntegrationService());
+final bankIntegrationServiceProvider =
+    Provider((ref) => BankIntegrationService());

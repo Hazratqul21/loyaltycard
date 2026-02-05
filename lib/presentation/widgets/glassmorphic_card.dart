@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Qayta ishlatiladigan glassmorphism karta widgeti.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -13,34 +14,34 @@ import '../../core/constants/app_sizes.dart';
 class GlassmorphicCard extends StatelessWidget {
   /// Ichki kontent
   final Widget child;
-  
+
   /// Karta kengligi
   final double? width;
-  
+
   /// Karta balandligi
   final double? height;
-  
+
   /// Ichki padding
   final EdgeInsetsGeometry padding;
-  
+
   /// Tashqi margin
   final EdgeInsetsGeometry? margin;
-  
+
   /// Burchak radiusi
   final double borderRadius;
-  
+
   /// Blur miqdori
   final double blur;
-  
+
   /// Fon rangi shaffofligi
   final double opacity;
-  
+
   /// Dark mode uchun
   final bool isDark;
-  
+
   /// Bosish hodisasi
   final VoidCallback? onTap;
-  
+
   /// Gradient ranglar (agar kerak bo'lsa)
   final List<Color>? gradientColors;
 
@@ -62,7 +63,7 @@ class GlassmorphicCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDarkMode = Theme.of(context).brightness == Brightness.dark;
-    
+
     Widget cardContent = ClipRRect(
       borderRadius: BorderRadius.circular(borderRadius),
       child: BackdropFilter(
@@ -120,9 +121,7 @@ class GlassmorphicCard extends StatelessWidget {
     }
 
     return BoxDecoration(
-      color: isDarkMode || isDark
-          ? AppColors.glassDark
-          : AppColors.glassWhite,
+      color: isDarkMode || isDark ? AppColors.glassDark : AppColors.glassWhite,
       borderRadius: BorderRadius.circular(borderRadius),
       border: Border.all(
         color: isDarkMode || isDark

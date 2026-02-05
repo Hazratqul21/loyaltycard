@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Reward uchun Hive model.
 /// ==========================================================================
+library;
 
 import 'package:hive/hive.dart';
 import '../../domain/entities/reward.dart';

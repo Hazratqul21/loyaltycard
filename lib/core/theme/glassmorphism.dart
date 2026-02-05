@@ -4,6 +4,7 @@
 /// Glassmorphism effekti uchun utilitalar.
 /// Zamonaviy shisha ko'rinishidagi dizayn elementlari.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';

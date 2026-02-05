@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Gradient tugma widgeti.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
@@ -12,25 +13,25 @@ import '../../core/constants/app_sizes.dart';
 class GradientButton extends StatefulWidget {
   /// Tugma matni
   final String text;
-  
+
   /// Bosish hodisasi
   final VoidCallback? onPressed;
-  
+
   /// Icon (ixtiyoriy)
   final IconData? icon;
-  
+
   /// Gradient ranglar
   final List<Color> colors;
-  
+
   /// Tugma kengligi
   final double? width;
-  
+
   /// Tugma balandligi
   final double height;
-  
+
   /// Yuklanmoqda holati
   final bool isLoading;
-  
+
   /// O'chirilgan holat
   final bool isDisabled;
 

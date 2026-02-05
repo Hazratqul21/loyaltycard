@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Sotuvchi tomonidan qilingan skanerlar tarixi.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -12,7 +13,6 @@ import '../../../core/constants/app_sizes.dart';
 import '../../../core/utils/extensions.dart';
 import '../../providers/merchant_provider.dart';
 import '../../providers/auth_provider.dart';
-import '../../widgets/glassmorphic_card.dart';
 
 class MerchantHistoryScreen extends ConsumerWidget {
   const MerchantHistoryScreen({super.key});

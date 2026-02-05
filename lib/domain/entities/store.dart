@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Do'kon entity - joylashuv va ma'lumotlar.
 /// ==========================================================================
+library;
 
 import 'sync_status.dart' as domain_sync;
 
@@ -22,12 +23,12 @@ class WorkingHours {
 
   bool get isOpen {
     if (isClosed) return false;
-    
+
     final now = DateTime.now();
     final open = _parseTime(openTime);
     final close = _parseTime(closeTime);
     final current = TimeOfDay(hour: now.hour, minute: now.minute);
-    
+
     return _isTimeInRange(current, open, close);
   }
 
@@ -43,16 +44,16 @@ class WorkingHours {
     final currentMinutes = current.hour * 60 + current.minute;
     final openMinutes = open.hour * 60 + open.minute;
     final closeMinutes = close.hour * 60 + close.minute;
-    
+
     return currentMinutes >= openMinutes && currentMinutes <= closeMinutes;
   }
 
   Map<String, dynamic> toJson() => {
-    'dayOfWeek': dayOfWeek,
-    'openTime': openTime,
-    'closeTime': closeTime,
-    'isClosed': isClosed,
-  };
+        'dayOfWeek': dayOfWeek,
+        'openTime': openTime,
+        'closeTime': closeTime,
+        'isClosed': isClosed,
+      };
 
   factory WorkingHours.fromJson(Map<String, dynamic> json) {
     return WorkingHours(
@@ -80,33 +81,33 @@ class Store {
   final String? description;
   final String? logoUrl;
   final String? imageUrl;
-  
+
   // Joylashuv
   final double latitude;
   final double longitude;
   final String? address;
   final String? city;
   final String? country;
-  
+
   // Bog'lanish
   final String? phone;
   final String? email;
   final String? website;
-  
+
   // Kategoriya
   final String category;
   final List<String> tags;
-  
+
   // Ish vaqti
   final List<WorkingHours> workingHours;
-  
+
   // Loyalty card bog'lanish
   final String? linkedCardId;
-  
+
   // Sync
   final DateTime lastModifiedAt;
   final domain_sync.SyncStatus syncStatus;
-  
+
   final bool isActive;
 
   Store({
@@ -135,17 +136,28 @@ class Store {
 
   /// Bugun ochiqmi?
   bool get isOpenNow {
-    if (workingHours.isEmpty) return true; // Ma'lumot yo'q = ochiq deb hisoblaymiz
-    
+    if (workingHours.isEmpty) {
+      return true; // Ma'lumot yo'q = ochiq deb hisoblaymiz
+    }
+
     final today = DateTime.now().weekday;
-    final dayNames = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+    final dayNames = [
+      'Monday',
+      'Tuesday',
+      'Wednesday',
+      'Thursday',
+      'Friday',
+      'Saturday',
+      'Sunday'
+    ];
     final todayName = dayNames[today - 1];
-    
+
     final todayHours = workingHours.firstWhere(
       (h) => h.dayOfWeek == todayName,
-      orElse: () => const WorkingHours(dayOfWeek: '', openTime: '00:00', closeTime: '23:59'),
+      orElse: () => const WorkingHours(
+          dayOfWeek: '', openTime: '00:00', closeTime: '23:59'),
     );
-    
+
     return todayHours.isOpen;
   }
 
@@ -207,28 +219,28 @@ class Store {
   }
 
   Map<String, dynamic> toJson() => {
-    'id': id,
-    'userId': userId,
-    'name': name,
-    'description': description,
-    'logoUrl': logoUrl,
-    'imageUrl': imageUrl,
-    'latitude': latitude,
-    'longitude': longitude,
-    'address': address,
-    'city': city,
-    'country': country,
-    'phone': phone,
-    'email': email,
-    'website': website,
-    'category': category,
-    'tags': tags,
-    'workingHours': workingHours.map((h) => h.toJson()).toList(),
-    'linkedCardId': linkedCardId,
-    'lastModifiedAt': lastModifiedAt.toIso8601String(),
-    'syncStatus': syncStatus.name,
-    'isActive': isActive,
-  };
+        'id': id,
+        'userId': userId,
+        'name': name,
+        'description': description,
+        'logoUrl': logoUrl,
+        'imageUrl': imageUrl,
+        'latitude': latitude,
+        'longitude': longitude,
+        'address': address,
+        'city': city,
+        'country': country,
+        'phone': phone,
+        'email': email,
+        'website': website,
+        'category': category,
+        'tags': tags,
+        'workingHours': workingHours.map((h) => h.toJson()).toList(),
+        'linkedCardId': linkedCardId,
+        'lastModifiedAt': lastModifiedAt.toIso8601String(),
+        'syncStatus': syncStatus.name,
+        'isActive': isActive,
+      };
 
   factory Store.fromJson(Map<String, dynamic> json) {
     return Store(
@@ -249,8 +261,9 @@ class Store {
       category: json['category'] ?? 'General',
       tags: List<String>.from(json['tags'] ?? []),
       workingHours: (json['workingHours'] as List?)
-          ?.map((h) => WorkingHours.fromJson(h))
-          .toList() ?? [],
+              ?.map((h) => WorkingHours.fromJson(h))
+              .toList() ??
+          [],
       linkedCardId: json['linkedCardId'],
       lastModifiedAt: json['lastModifiedAt'] != null
           ? DateTime.parse(json['lastModifiedAt'])

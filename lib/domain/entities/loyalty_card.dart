@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Loyalty Card domain entity.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'sync_status.dart';
@@ -11,37 +12,37 @@ import 'sync_status.dart';
 class LoyaltyCard {
   /// Kartaning unikal identifikatori
   final String id;
-  
+
   /// Foydalanuvchi ID (Firebase UID)
   final String? userId;
-  
+
   /// Do'kon nomi
   final String storeName;
-  
+
   /// Do'kon logotipi URL (yoki local asset)
   final String? storeLogoUrl;
-  
+
   /// Joriy ball miqdori
   final int currentPoints;
-  
+
   /// Karta darajasi (Bronze, Silver, Gold, Platinum)
   final String tier;
-  
+
   /// Karta rangi (hex yoki Color index)
   final int colorIndex;
-  
+
   /// Karta qo'shilgan sana
   final DateTime createdAt;
-  
+
   /// Oxirgi faollik sanasi
   final DateTime lastActivityAt;
-  
+
   /// Oxirgi o'zgartirilgan vaqt (sync uchun)
   final DateTime lastModifiedAt;
-  
+
   /// Sinxronizatsiya holati
   final SyncStatus syncStatus;
-  
+
   /// Karta faol yoki yo'qligini belgilash
   final bool isActive;
 
@@ -113,7 +114,7 @@ class LoyaltyCard {
       isEcoFriendly: isEcoFriendly ?? this.isEcoFriendly,
     );
   }
-  
+
   /// O'zgartirilgan nusxa yaratish (sync uchun)
   LoyaltyCard markAsModified() {
     return copyWith(
@@ -121,7 +122,7 @@ class LoyaltyCard {
       syncStatus: SyncStatus.pendingUpload,
     );
   }
-  
+
   /// Sinxronlangan deb belgilash
   LoyaltyCard markAsSynced() {
     return copyWith(syncStatus: SyncStatus.synced);

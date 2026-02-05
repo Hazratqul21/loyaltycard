@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Reward domain entity.
 /// ==========================================================================
+library;
 
 import 'sync_status.dart';
 
@@ -10,43 +11,43 @@ import 'sync_status.dart';
 class Reward {
   /// Sovg'aning unikal identifikatori
   final String id;
-  
+
   /// Foydalanuvchi ID (Firebase UID)
   final String? userId;
-  
+
   /// Sovg'a nomi
   final String title;
-  
+
   /// Sovg'a tavsifi
   final String description;
-  
+
   /// Kerakli ball miqdori
   final int requiredPoints;
-  
+
   /// Sovg'a rasmi URL
   final String? imageUrl;
-  
+
   /// Qaysi do'konga tegishli (null = universal)
   final String? storeId;
-  
+
   /// Do'kon nomi
   final String? storeName;
-  
+
   /// Sovg'a turi (chegirma, mahsulot, xizmat)
   final String category;
-  
+
   /// Mavjud soni (-1 = cheksiz)
   final int quantity;
-  
+
   /// Amal qilish muddati
   final DateTime? expiresAt;
-  
+
   /// Faol holati
   final bool isActive;
-  
+
   /// Oxirgi o'zgartirilgan vaqt (sync uchun)
   final DateTime lastModifiedAt;
-  
+
   /// Sinxronizatsiya holati
   final SyncStatus syncStatus;
 
@@ -77,7 +78,8 @@ class Reward {
   }
 
   /// Mavjudmi?
-  bool get isAvailable => isActive && !isExpired && (isUnlimited || quantity > 0);
+  bool get isAvailable =>
+      isActive && !isExpired && (isUnlimited || quantity > 0);
 
   /// Nusxa olish va o'zgartirish
   Reward copyWith({
@@ -113,7 +115,7 @@ class Reward {
       syncStatus: syncStatus ?? this.syncStatus,
     );
   }
-  
+
   /// O'zgartirilgan nusxa yaratish (sync uchun)
   Reward markAsModified() {
     return copyWith(
@@ -125,9 +127,7 @@ class Reward {
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
-      other is Reward &&
-          runtimeType == other.runtimeType &&
-          id == other.id;
+      other is Reward && runtimeType == other.runtimeType && id == other.id;
 
   @override
   int get hashCode => id.hashCode;

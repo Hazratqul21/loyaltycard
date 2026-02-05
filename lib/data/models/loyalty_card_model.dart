@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// LoyaltyCard uchun Hive model.
 /// ==========================================================================
+library;
 
 import 'package:hive/hive.dart';
 import '../../domain/entities/loyalty_card.dart';

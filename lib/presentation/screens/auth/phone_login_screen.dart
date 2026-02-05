@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Telefon raqami orqali kirish ekrani.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -72,7 +73,7 @@ class _PhoneLoginScreenState extends ConsumerState<PhoneLoginScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

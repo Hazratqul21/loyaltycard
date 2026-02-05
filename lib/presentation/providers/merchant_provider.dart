@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Merchant rejimi va amallari uchun provider.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/repositories/merchant_repository.dart';

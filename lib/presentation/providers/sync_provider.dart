@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Sinxronizatsiya holati uchun Riverpod provider.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../core/services/sync_service.dart' as service;

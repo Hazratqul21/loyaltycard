@@ -4,6 +4,7 @@
 /// Firebase Cloud Messaging (FCM) xizmati.
 /// Push bildirishnomalari, topic subscriptions, local notifications.
 /// ==========================================================================
+library;
 
 import 'dart:async';
 import 'dart:convert';
@@ -219,7 +220,7 @@ class NotificationService {
     );
 
     // Android notification channel
-    if (Platform.isAndroid) {
+    if (!kIsWeb && Platform.isAndroid) {
       const channel = AndroidNotificationChannel(
         'loyalty_card_channel',
         'LoyaltyCard Notifications',
@@ -379,6 +380,7 @@ class NotificationService {
 
   /// Topic'ga obuna bo'lish
   Future<void> subscribeToTopic(String topic) async {
+    if (kIsWeb) return; // Not supported on web
     try {
       await _messaging.subscribeToTopic(topic);
       if (kDebugMode) print('✅ Subscribed to: $topic');
@@ -389,6 +391,7 @@ class NotificationService {
 
   /// Topic'dan chiqish
   Future<void> unsubscribeFromTopic(String topic) async {
+    if (kIsWeb) return; // Not supported on web
     try {
       await _messaging.unsubscribeFromTopic(topic);
       if (kDebugMode) print('✅ Unsubscribed from: $topic');
@@ -399,11 +402,13 @@ class NotificationService {
 
   /// Do'konga obuna
   Future<void> subscribeToStore(String storeId) async {
+    if (kIsWeb) return;
     await subscribeToTopic('store_$storeId');
   }
 
   /// Do'kondan chiqish
   Future<void> unsubscribeFromStore(String storeId) async {
+    if (kIsWeb) return;
     await unsubscribeFromTopic('store_$storeId');
   }
 

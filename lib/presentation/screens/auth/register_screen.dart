@@ -32,6 +32,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
             _passwordController.text.trim(),
             _nameController.text.trim(),
           );
+      if (!mounted) return;
       _checkError();
     }
   }
@@ -100,8 +101,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       borderRadius: BorderRadius.all(Radius.circular(12)),
                     ),
                   ),
-                  validator: (value) =>
-                      (value?.isNotEmpty ?? false) ? null : l10n.get('error_required'),
+                  validator: (value) => (value?.isNotEmpty ?? false)
+                      ? null
+                      : l10n.get('error_required'),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -114,8 +116,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ),
                   ),
                   keyboardType: TextInputType.emailAddress,
-                  validator: (value) =>
-                      (value?.contains('@') ?? false) ? null : l10n.get('error_invalid_email'),
+                  validator: (value) => (value?.contains('@') ?? false)
+                      ? null
+                      : l10n.get('error_invalid_email'),
                 ),
                 const SizedBox(height: 16),
                 TextFormField(
@@ -128,8 +131,9 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                     ),
                   ),
                   obscureText: true,
-                  validator: (value) =>
-                      (value?.length ?? 0) >= 6 ? null : l10n.get('error_weak_pass'),
+                  validator: (value) => (value?.length ?? 0) >= 6
+                      ? null
+                      : l10n.get('error_weak_pass'),
                 ),
                 const SizedBox(height: 32),
                 ElevatedButton(

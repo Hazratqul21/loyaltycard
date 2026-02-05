@@ -3,21 +3,22 @@
 /// ==========================================================================
 /// Sinxronizatsiya holati enum va sync metadatasi.
 /// ==========================================================================
+library;
 
 /// Elementning sinxronizatsiya holati
 enum SyncStatus {
   /// Sinxronlangan (server bilan bir xil)
   synced,
-  
+
   /// Mahalliy o'zgarish bor, serverga yuklash kerak
   pendingUpload,
-  
-  /// Serverdan yangi ma'lumot bor, yuklab olish kerak  
+
+  /// Serverdan yangi ma'lumot bor, yuklab olish kerak
   pendingDownload,
-  
+
   /// Konflikt bor (lokal va serverda farq)
   conflict,
-  
+
   /// Hali sinxronlanmagan (yangi yaratilgan)
   notSynced,
 }

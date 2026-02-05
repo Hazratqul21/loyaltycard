@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Sevimli do'konlar va tez kirish kartalari.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -46,24 +47,25 @@ class FavoritesScreen extends ConsumerWidget {
                 child: Text(
                   'Sevimlilar',
                   style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-                    fontWeight: FontWeight.w800,
-                  ),
+                        fontWeight: FontWeight.w800,
+                      ),
                 ),
               ),
 
               // Quick access section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
                 child: Text(
                   'Tez kirish',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.tiffanyBlue,
-                  ),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.tiffanyBlue,
+                      ),
                 ),
               ),
               const SizedBox(height: AppSizes.paddingSM),
-              
+
               // Quick access cards
               SizedBox(
                 height: 120,
@@ -88,13 +90,14 @@ class FavoritesScreen extends ConsumerWidget {
 
               // Favorite stores section
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: AppSizes.paddingMD),
                 child: Text(
                   'Sevimli do\'konlar',
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    fontWeight: FontWeight.w700,
-                    color: AppColors.tiffanyBlue,
-                  ),
+                        fontWeight: FontWeight.w700,
+                        color: AppColors.tiffanyBlue,
+                      ),
                 ),
               ),
               const SizedBox(height: AppSizes.paddingSM),
@@ -133,7 +136,7 @@ class FavoritesScreen extends ConsumerWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              FaIcon(
+              const FaIcon(
                 FontAwesomeIcons.heart,
                 color: AppColors.tiffanyLight,
                 size: 24,
@@ -234,7 +237,7 @@ class FavoritesScreen extends ConsumerWidget {
             Container(
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [
                     AppColors.tiffanyBlue,
                     AppColors.tiffanyLight,
@@ -249,7 +252,7 @@ class FavoritesScreen extends ConsumerWidget {
               ),
             ),
             const SizedBox(width: AppSizes.paddingMD),
-            
+
             // Store info
             Expanded(
               child: Column(
@@ -258,8 +261,8 @@ class FavoritesScreen extends ConsumerWidget {
                   Text(
                     card.storeName,
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                      fontWeight: FontWeight.w700,
-                    ),
+                          fontWeight: FontWeight.w700,
+                        ),
                   ),
                   const SizedBox(height: 4),
                   Row(
@@ -275,7 +278,7 @@ class FavoritesScreen extends ConsumerWidget {
                         ),
                         child: Text(
                           '${card.currentPoints} ball',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: AppColors.tiffanyBlue,
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
@@ -284,7 +287,7 @@ class FavoritesScreen extends ConsumerWidget {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        '${card.tier}',
+                        card.tier,
                         style: TextStyle(
                           color: Colors.grey[600],
                           fontSize: 12,
@@ -300,10 +303,10 @@ class FavoritesScreen extends ConsumerWidget {
             IconButton(
               onPressed: () {
                 ref.read(cardsProvider.notifier).updateCard(
-                  card.copyWith(isActive: !card.isActive),
-                );
+                      card.copyWith(isActive: !card.isActive),
+                    );
               },
-              icon: FaIcon(
+              icon: const FaIcon(
                 FontAwesomeIcons.solidHeart,
                 color: AppColors.tiffanyBlue,
                 size: 20,
@@ -326,7 +329,7 @@ class FavoritesScreen extends ConsumerWidget {
               color: AppColors.tiffanyMint.withOpacity(0.3),
               shape: BoxShape.circle,
             ),
-            child: FaIcon(
+            child: const FaIcon(
               FontAwesomeIcons.heart,
               size: 48,
               color: AppColors.tiffanyBlue,
@@ -336,15 +339,15 @@ class FavoritesScreen extends ConsumerWidget {
           Text(
             'Sevimlilar bo\'sh',
             style: Theme.of(context).textTheme.titleLarge?.copyWith(
-              fontWeight: FontWeight.w700,
-            ),
+                  fontWeight: FontWeight.w700,
+                ),
           ),
           const SizedBox(height: AppSizes.paddingSM),
           Text(
             'Kartalarni sevimlilarga qo\'shing\ntez kirish uchun',
             style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-              color: Colors.grey,
-            ),
+                  color: Colors.grey,
+                ),
             textAlign: TextAlign.center,
           ),
         ],

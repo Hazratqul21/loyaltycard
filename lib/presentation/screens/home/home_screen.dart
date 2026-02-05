@@ -31,7 +31,7 @@ class HomeScreen extends ConsumerWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             const SizedBox(height: 20),
-            
+
             // Cards Horizontal Scroll
             _sectionHeader(context, 'Mavjud slotlar', true),
             const SizedBox(height: 16),
@@ -40,9 +40,12 @@ class HomeScreen extends ConsumerWidget {
               child: ListView(
                 scrollDirection: Axis.horizontal,
                 children: [
-                   _buildFintechCard('Korzinka', '5%', Colors.orange, FontAwesomeIcons.basketShopping),
-                   _buildFintechCard('Havas', '3%', Colors.green, FontAwesomeIcons.shop),
-                   _buildFintechCard('Uzum', '10%', Colors.purple, FontAwesomeIcons.bagShopping),
+                  _buildFintechCard('Korzinka', '5%', Colors.orange,
+                      FontAwesomeIcons.basketShopping),
+                  _buildFintechCard(
+                      'Havas', '3%', Colors.green, FontAwesomeIcons.shop),
+                  _buildFintechCard('Uzum', '10%', Colors.purple,
+                      FontAwesomeIcons.bagShopping),
                 ],
               ),
             ),
@@ -52,9 +55,13 @@ class HomeScreen extends ConsumerWidget {
             // Today's Transactions
             _sectionHeader(context, 'Bugungi tranzaksiyalar', true),
             const SizedBox(height: 16),
-            _buildTransactionTile('Korzinka.uz', '- 45,000 UZS', '14:20', Colors.orange),
-            _buildTransactionTile('Yandex Go', '- 12,000 UZS', '12:05', Colors.yellow),
-            _buildTransactionTile('Keshbek', '+ 2,500 ball', '09:12', Colors.green, isPoints: true),
+            _buildTransactionTile(
+                'Korzinka.uz', '- 45,000 UZS', '14:20', Colors.orange),
+            _buildTransactionTile(
+                'Yandex Go', '- 12,000 UZS', '12:05', Colors.yellow),
+            _buildTransactionTile(
+                'Keshbek', '+ 2,500 ball', '09:12', Colors.green,
+                isPoints: true),
 
             const SizedBox(height: 32),
 
@@ -76,12 +83,12 @@ class HomeScreen extends ConsumerWidget {
         Text(
           title,
           style: Theme.of(context).textTheme.titleLarge?.copyWith(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-          ),
+                fontSize: 18,
+                fontWeight: FontWeight.w800,
+              ),
         ),
         if (showAction)
-          Text(
+          const Text(
             'Barchasi',
             style: TextStyle(
               color: AppTheme.accentPurple,
@@ -93,7 +100,8 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildFintechCard(String brand, String percentage, Color color, IconData icon) {
+  Widget _buildFintechCard(
+      String brand, String percentage, Color color, IconData icon) {
     return Container(
       width: 150,
       margin: const EdgeInsets.only(right: 16),
@@ -119,7 +127,8 @@ class HomeScreen extends ConsumerWidget {
             children: [
               Text(
                 brand,
-                style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
+                style:
+                    const TextStyle(fontWeight: FontWeight.w800, fontSize: 16),
               ),
               const SizedBox(height: 4),
               Container(
@@ -144,7 +153,9 @@ class HomeScreen extends ConsumerWidget {
     );
   }
 
-  Widget _buildTransactionTile(String title, String amount, String time, Color color, {bool isPoints = false}) {
+  Widget _buildTransactionTile(
+      String title, String amount, String time, Color color,
+      {bool isPoints = false}) {
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
@@ -169,7 +180,8 @@ class HomeScreen extends ConsumerWidget {
               children: [
                 Text(
                   title,
-                  style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 15),
+                  style: const TextStyle(
+                      fontWeight: FontWeight.w700, fontSize: 15),
                 ),
                 Text(
                   time,
@@ -208,7 +220,8 @@ class HomeScreen extends ConsumerWidget {
         children: [
           const Text(
             'Jami keshbek',
-            style: TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
+            style:
+                TextStyle(color: Colors.white70, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 8),
           const Text(

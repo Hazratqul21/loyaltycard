@@ -4,6 +4,7 @@
 /// Ilovaning barcha ranglari uchun markaziy konstantalar.
 /// Dark va Light mode uchun alohida ranglar aniqlangan.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 

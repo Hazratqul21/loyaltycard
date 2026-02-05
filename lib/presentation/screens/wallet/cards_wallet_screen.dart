@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Kartalar hamyoni - barcha sodiqlik kartalari va QR kodlari.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -149,7 +150,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
             vertical: AppSizes.paddingMD,
           ),
           decoration: BoxDecoration(
-            gradient: LinearGradient(
+            gradient: const LinearGradient(
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
               colors: [
@@ -241,7 +242,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
                                 borderRadius: BorderRadius.circular(8),
                               ),
                               child: Text(
-                                '${card.tier}',
+                                card.tier,
                                 style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 10,
@@ -364,7 +365,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
               color: AppColors.tiffanyBlue.withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: FaIcon(
+            child: const FaIcon(
               FontAwesomeIcons.wallet,
               size: 48,
               color: AppColors.tiffanyBlue,
@@ -458,11 +459,11 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
               version: QrVersions.auto,
               size: 200.0,
               backgroundColor: Colors.white,
-              eyeStyle: QrEyeStyle(
+              eyeStyle: const QrEyeStyle(
                 eyeShape: QrEyeShape.square,
                 color: AppColors.tiffanyBlue,
               ),
-              dataModuleStyle: QrDataModuleStyle(
+              dataModuleStyle: const QrDataModuleStyle(
                 dataModuleShape: QrDataModuleShape.square,
                 color: Colors.black87,
               ),
@@ -485,7 +486,7 @@ class _CardsWalletScreenState extends ConsumerState<CardsWalletScreen> {
             ),
             child: Text(
               '${card.currentPoints} ball',
-              style: TextStyle(
+              style: const TextStyle(
                 color: AppColors.tiffanyBlue,
                 fontWeight: FontWeight.w700,
               ),

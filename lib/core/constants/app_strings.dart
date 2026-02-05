@@ -4,6 +4,7 @@
 /// Ilovadagi barcha matnlar uchun konstantalar.
 /// Lokalizatsiya qilish uchun qulay struktura.
 /// ==========================================================================
+library;
 
 /// Ilova uchun barcha matnli konstantalar
 class AppStrings {

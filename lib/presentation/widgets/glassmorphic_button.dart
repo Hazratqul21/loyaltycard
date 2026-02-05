@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Premium glassmorphic button widget with Tiffany theme.
 /// ==========================================================================
+library;
 
 import 'dart:ui';
 import 'package:flutter/material.dart';
@@ -134,7 +135,8 @@ class _GlassmorphicButtonState extends State<GlassmorphicButton>
                         height: 24,
                         child: CircularProgressIndicator(
                           strokeWidth: 2,
-                          valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.white),
                         ),
                       )
                     : Row(

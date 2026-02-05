@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Statistika uchun qo'shimcha providerlar.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'cards_provider.dart';
@@ -29,7 +30,7 @@ class AnalyticsSummary {
 /// Statistika summary provider
 final analyticsSummaryProvider = FutureProvider<AnalyticsSummary>((ref) async {
   final repository = ref.watch(loyaltyRepositoryProvider);
-  
+
   // Parallel ravishda ma'lumotlarni yuklash
   final results = await Future.wait([
     repository.getTotalPoints(),
@@ -37,22 +38,22 @@ final analyticsSummaryProvider = FutureProvider<AnalyticsSummary>((ref) async {
     repository.getAllTransactions(),
     repository.getStatsByStore(),
   ]);
-  
+
   final totalPoints = results[0] as int;
   final totalCards = results[1] as int;
   final transactions = results[2] as List;
   final pointsByStore = results[3] as Map<String, int>;
-  
+
   // Joriy oy statistikasi
   final now = DateTime.now();
   final thisMonth = transactions.where((t) {
     final date = t.date as DateTime;
     return date.year == now.year && date.month == now.month;
   });
-  
+
   int earnedThisMonth = 0;
   int spentThisMonth = 0;
-  
+
   for (final t in thisMonth) {
     if (t.type.index == 0) {
       earnedThisMonth += t.points as int;
@@ -60,7 +61,7 @@ final analyticsSummaryProvider = FutureProvider<AnalyticsSummary>((ref) async {
       spentThisMonth += t.points as int;
     }
   }
-  
+
   return AnalyticsSummary(
     totalPoints: totalPoints,
     totalCards: totalCards,
@@ -87,7 +88,7 @@ class ChartBarData {
 /// Do'konlar bo'yicha chart data
 final storeChartDataProvider = FutureProvider<List<ChartBarData>>((ref) async {
   final stats = await ref.watch(storeStatsProvider.future);
-  
+
   int index = 0;
   return stats.entries.map((e) {
     return ChartBarData(

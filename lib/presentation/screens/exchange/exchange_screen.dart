@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Ballarni ayirboshlash ekrani (Multi-currency points).
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -153,7 +154,7 @@ class _ExchangeScreenState extends ConsumerState<ExchangeScreen> {
   Widget _buildCardSelector(List<LoyaltyCard> cards, bool isSource) {
     final selectedCard = isSource ? _sourceCard : _targetCard;
 
-    return Container(
+    return SizedBox(
       height: 80,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,

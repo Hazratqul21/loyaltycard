@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// O'lchamlar uchun konstantalar - padding, margin, radius va boshqalar.
 /// ==========================================================================
+library;
 
 /// Ilova uchun o'lcham konstantalari
 class AppSizes {

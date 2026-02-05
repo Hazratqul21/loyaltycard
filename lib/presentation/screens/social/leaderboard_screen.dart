@@ -3,10 +3,10 @@
 /// ==========================================================================
 /// Global va do'stlar orasidagi reyting ekrani.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_sizes.dart';
 import '../../providers/social_provider.dart';
@@ -167,9 +167,9 @@ class LeaderboardScreen extends ConsumerWidget {
   Widget _buildUserRankSummary(user) {
     return Container(
       padding: const EdgeInsets.all(AppSizes.paddingLG),
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: AppColors.primaryColor,
-        borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

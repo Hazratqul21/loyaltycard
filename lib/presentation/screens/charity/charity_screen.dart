@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Ballarni xayriyaga yo'naltirish ekrani.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ class CharityScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final totalPoints = ref.watch(totalPointsProvider).value ?? 0;
-    
+
     // Mock charity partners
     final partners = [
       const CharityPartner(
@@ -80,7 +81,8 @@ class CharityScreen extends ConsumerWidget {
       ),
       child: Column(
         children: [
-          const FaIcon(FontAwesomeIcons.handHoldingHeart, size: 50, color: AppColors.primaryColor),
+          const FaIcon(FontAwesomeIcons.handHoldingHeart,
+              size: 50, color: AppColors.primaryColor),
           const SizedBox(height: 16),
           const Text(
             'Ezgu ishga hissa qo\'shing',
@@ -89,7 +91,8 @@ class CharityScreen extends ConsumerWidget {
           const SizedBox(height: 8),
           Text(
             'Sizning jami ballaringiz: $points',
-            style: const TextStyle(color: AppColors.primaryColor, fontWeight: FontWeight.w600),
+            style: const TextStyle(
+                color: AppColors.primaryColor, fontWeight: FontWeight.w600),
           ),
         ],
       ),
@@ -120,15 +123,20 @@ class CharityScreen extends ConsumerWidget {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(partner.name, style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16)),
-                      Text(partner.category, style: TextStyle(fontSize: 10, color: Colors.grey.shade500)),
+                      Text(partner.name,
+                          style: const TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 16)),
+                      Text(partner.category,
+                          style: TextStyle(
+                              fontSize: 10, color: Colors.grey.shade500)),
                     ],
                   ),
                 ),
               ],
             ),
             const SizedBox(height: 12),
-            Text(partner.description, style: const TextStyle(fontSize: 13, color: Colors.grey)),
+            Text(partner.description,
+                style: const TextStyle(fontSize: 13, color: Colors.grey)),
             const SizedBox(height: 16),
             LinearProgressIndicator(
               value: 0.7,
@@ -140,10 +148,12 @@ class CharityScreen extends ConsumerWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('${partner.totalRaisedPoints} ball yig\'ildi', style: const TextStyle(fontSize: 11, color: Colors.grey)),
+                Text('${partner.totalRaisedPoints} ball yig\'ildi',
+                    style: const TextStyle(fontSize: 11, color: Colors.grey)),
                 TextButton(
                   onPressed: () {},
-                  child: const Text('Ball berish', style: TextStyle(fontWeight: FontWeight.bold)),
+                  child: const Text('Ball berish',
+                      style: TextStyle(fontWeight: FontWeight.bold)),
                 ),
               ],
             ),

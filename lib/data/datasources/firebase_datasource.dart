@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Firestore bilan remote ma'lumotlar manbai.
 /// ==========================================================================
+library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -28,7 +29,8 @@ class FirebaseDatasource {
   }
 
   /// Tranzaksiyalar kolleksiyasi
-  CollectionReference<Map<String, dynamic>> _transactionsCollection(String userId) {
+  CollectionReference<Map<String, dynamic>> _transactionsCollection(
+      String userId) {
     return _firestore.collection('${_userPath(userId)}/transactions');
   }
 
@@ -94,9 +96,12 @@ class FirebaseDatasource {
   }
 
   /// Tranzaksiya saqlash
-  Future<void> saveTransaction(String userId, TransactionModel transaction) async {
+  Future<void> saveTransaction(
+      String userId, TransactionModel transaction) async {
     try {
-      await _transactionsCollection(userId).doc(transaction.id).set(transaction.toJson());
+      await _transactionsCollection(userId)
+          .doc(transaction.id)
+          .set(transaction.toJson());
     } catch (e) {
       if (kDebugMode) print('❌ Tranzaksiyani saqlashda xato: $e');
       rethrow;
@@ -104,7 +109,8 @@ class FirebaseDatasource {
   }
 
   /// Bir nechta tranzaksiya saqlash (batch)
-  Future<void> saveTransactions(String userId, List<TransactionModel> transactions) async {
+  Future<void> saveTransactions(
+      String userId, List<TransactionModel> transactions) async {
     final batch = _firestore.batch();
     for (final tx in transactions) {
       batch.set(_transactionsCollection(userId).doc(tx.id), tx.toJson());
@@ -149,7 +155,8 @@ class FirebaseDatasource {
   // ==================== User Profile ====================
 
   /// Foydalanuvchi profilini saqlash
-  Future<void> saveUserProfile(String userId, Map<String, dynamic> profile) async {
+  Future<void> saveUserProfile(
+      String userId, Map<String, dynamic> profile) async {
     await _firestore.doc(_userPath(userId)).set({
       ...profile,
       'updatedAt': FieldValue.serverTimestamp(),
@@ -188,7 +195,8 @@ class FirebaseDatasource {
     await batch.commit();
 
     if (kDebugMode) {
-      print('✅ Backup: ${cards.length} karta, ${transactions.length} tranzaksiya, ${rewards.length} sovg\'a');
+      print(
+          '✅ Backup: ${cards.length} karta, ${transactions.length} tranzaksiya, ${rewards.length} sovg\'a');
     }
   }
 
@@ -199,7 +207,8 @@ class FirebaseDatasource {
     final rewards = await getAllRewards(userId);
 
     if (kDebugMode) {
-      print('✅ Restore: ${cards.length} karta, ${transactions.length} tranzaksiya, ${rewards.length} sovg\'a');
+      print(
+          '✅ Restore: ${cards.length} karta, ${transactions.length} tranzaksiya, ${rewards.length} sovg\'a');
     }
 
     return {

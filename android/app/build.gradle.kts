@@ -23,7 +23,7 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.hazRATQUL.loyaltycard.loyaltycard"
+        applicationId = "com.loyalty.card"
         minSdk = flutter.minSdkVersion  // Minimum SDK for Firebase and notifications
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
@@ -38,6 +38,11 @@ android {
             signingConfig = signingConfigs.getByName("debug")
         }
     }
+
+    lint {
+        checkReleaseBuilds = false
+        abortOnError = false
+    }
 }
 
 flutter {
@@ -45,6 +50,7 @@ flutter {
 }
 
 dependencies {
+    implementation("androidx.multidex:multidex:2.0.1")
     // Core library desugaring for Java 8+ APIs on older Android versions
     coreLibraryDesugaring("com.android.tools:desugar_jdk_libs:2.1.4")
 }

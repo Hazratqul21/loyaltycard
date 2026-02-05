@@ -4,9 +4,9 @@
 /// Geolokatsiya xizmati.
 /// Joylashuv, ruxsat, masofa hisoblash, geofencing.
 /// ==========================================================================
+library;
 
 import 'dart:async';
-import 'dart:math' as math;
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:geocoding/geocoding.dart';

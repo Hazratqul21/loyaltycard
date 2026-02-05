@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Hive bilan local ma'lumotlar manbai.
 /// ==========================================================================
+library;
 
 import 'package:hive_flutter/hive_flutter.dart';
 import '../../domain/entities/sync_status.dart';

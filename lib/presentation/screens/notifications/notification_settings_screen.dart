@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Bildirishnoma sozlamalari ekrani.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

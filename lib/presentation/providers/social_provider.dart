@@ -3,9 +3,9 @@
 /// ==========================================================================
 /// Ijtimoiy tarmoq funksiyalari va leaderboard provider.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../domain/entities/user.dart';
 
 class LeaderboardEntry {
   final String userId;
@@ -58,18 +58,25 @@ class SocialNotifier extends StateNotifier<SocialState> {
 
   Future<void> loadLeaderboard() async {
     state = state.copyWith(isLoading: true);
-    
+
     // Demo data for leaderboard
     await Future.delayed(const Duration(milliseconds: 800));
-    
+
     final demoEntries = [
-      const LeaderboardEntry(userId: '1', displayName: 'Aziz', points: 15400, tier: 'Platinum'),
-      const LeaderboardEntry(userId: '2', displayName: 'Malika', points: 12100, tier: 'Platinum'),
-      const LeaderboardEntry(userId: '3', displayName: 'Sherzod', points: 8500, tier: 'Gold'),
-      const LeaderboardEntry(userId: '4', displayName: 'Davron', points: 7200, tier: 'Gold'),
-      const LeaderboardEntry(userId: '5', displayName: 'Jasur', points: 5100, tier: 'Gold'),
-      const LeaderboardEntry(userId: '6', displayName: 'Laylo', points: 4300, tier: 'Silver'),
-      const LeaderboardEntry(userId: '7', displayName: 'Nozim', points: 3900, tier: 'Silver'),
+      const LeaderboardEntry(
+          userId: '1', displayName: 'Aziz', points: 15400, tier: 'Platinum'),
+      const LeaderboardEntry(
+          userId: '2', displayName: 'Malika', points: 12100, tier: 'Platinum'),
+      const LeaderboardEntry(
+          userId: '3', displayName: 'Sherzod', points: 8500, tier: 'Gold'),
+      const LeaderboardEntry(
+          userId: '4', displayName: 'Davron', points: 7200, tier: 'Gold'),
+      const LeaderboardEntry(
+          userId: '5', displayName: 'Jasur', points: 5100, tier: 'Gold'),
+      const LeaderboardEntry(
+          userId: '6', displayName: 'Laylo', points: 4300, tier: 'Silver'),
+      const LeaderboardEntry(
+          userId: '7', displayName: 'Nozim', points: 3900, tier: 'Silver'),
     ];
 
     state = state.copyWith(
@@ -84,6 +91,7 @@ class SocialNotifier extends StateNotifier<SocialState> {
   }
 }
 
-final socialProvider = StateNotifierProvider<SocialNotifier, SocialState>((ref) {
+final socialProvider =
+    StateNotifierProvider<SocialNotifier, SocialState>((ref) {
   return SocialNotifier();
 });

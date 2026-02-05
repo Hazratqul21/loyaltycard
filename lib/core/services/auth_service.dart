@@ -4,6 +4,7 @@
 /// Firebase Authentication xizmati.
 /// Email va Google bilan kirish.
 /// ==========================================================================
+library;
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
@@ -127,7 +128,7 @@ class AuthService {
     try {
       // Google sign-in oynasini ochish
       final googleUser = await _googleSignIn.signIn();
-      
+
       if (googleUser == null) {
         return const AuthResult.failure('Google kirish bekor qilindi');
       }

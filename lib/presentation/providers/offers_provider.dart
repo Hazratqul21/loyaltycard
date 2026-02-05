@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Maxsus takliflar uchun provider.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../domain/entities/offer.dart';

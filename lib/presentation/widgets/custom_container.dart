@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Qayta ishlatiladigan maxsus konteyner widget.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import '../../core/constants/app_sizes.dart';
@@ -11,34 +12,34 @@ import '../../core/constants/app_sizes.dart';
 class CustomContainer extends StatelessWidget {
   /// Ichki kontent
   final Widget child;
-  
+
   /// Kenglik
   final double? width;
-  
+
   /// Balandlik
   final double? height;
-  
+
   /// Ichki padding
   final EdgeInsetsGeometry padding;
-  
+
   /// Tashqi margin
   final EdgeInsetsGeometry? margin;
-  
+
   /// Burchak radiusi
   final double borderRadius;
-  
+
   /// Fon rangi
   final Color? backgroundColor;
-  
+
   /// Gradient
   final Gradient? gradient;
-  
+
   /// Chegara
   final Border? border;
-  
+
   /// Soya
   final List<BoxShadow>? boxShadow;
-  
+
   /// Bosish hodisasi
   final VoidCallback? onTap;
 
@@ -130,7 +131,7 @@ class CustomContainer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final theme = Theme.of(context);
-    
+
     Widget container = Container(
       width: width,
       height: height,

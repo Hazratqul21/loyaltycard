@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Sozlamalar sahifasi - profil, tema, backup/restore, sync status.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -431,7 +432,7 @@ class _SettingsScreenState extends ConsumerState<SettingsScreen> {
       ),
       child: Text(
         tier.toUpperCase(),
-        style: TextStyle(
+        style: const TextStyle(
           color: Colors.white,
           fontSize: 8,
           fontWeight: FontWeight.bold,

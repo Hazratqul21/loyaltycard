@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Ovozli komandalar interfeysi (Avatar Glow bilan).
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

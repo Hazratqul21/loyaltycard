@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Oilaviy guruh va umumiy hamyon provideri.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 // import '../../domain/repositories/family_repository.dart'; // Temporarily commented out

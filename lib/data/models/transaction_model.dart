@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Transaction uchun Hive model.
 /// ==========================================================================
+library;
 
 import 'package:hive/hive.dart';
 import '../../domain/entities/transaction.dart';

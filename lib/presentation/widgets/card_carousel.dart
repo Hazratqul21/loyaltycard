@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Kartalar uchun animatsiyali karusel widget.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import '../../core/constants/app_colors.dart';
@@ -14,10 +15,10 @@ import 'loyalty_card_widget.dart';
 class CardCarousel extends StatefulWidget {
   /// Kartalar ro'yxati
   final List<LoyaltyCard> cards;
-  
+
   /// Karta bosilganda
   final Function(LoyaltyCard)? onCardTap;
-  
+
   /// Balandlik
   final double height;
 
@@ -151,10 +152,7 @@ class _CardCarouselState extends State<CardCarousel> {
             Text(
               'Karta yo\'q',
               style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.color,
+                    color: Theme.of(context).textTheme.bodySmall?.color,
                   ),
             ),
             const SizedBox(height: AppSizes.paddingSM),

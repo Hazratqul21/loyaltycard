@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Do'kon sotuvchilari uchun maxsus amallar interfeysi.
 /// ==========================================================================
+library;
 
 import '../entities/transaction.dart';
 

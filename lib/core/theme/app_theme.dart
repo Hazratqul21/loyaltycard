@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import '../constants/app_colors.dart';
 
 class AppTheme {
   // Fintech Color Palette
@@ -10,7 +9,7 @@ class AppTheme {
   static const Color accentOrange = Color(0xFFFF6B00);
   static const Color accentPurple = Color(0xFF4A00E0);
   static const Color accentRed = Color(0xFFFF3B30);
-  
+
   // Tiffany theme colors
   static const Color tiffanyBlue = Color(0xFF0ABAB5);
   static const Color tiffanyLight = Color(0xFF81D8D0);
@@ -26,9 +25,12 @@ class AppTheme {
         surface: background,
       ),
       textTheme: GoogleFonts.poppinsTextTheme().copyWith(
-        displayLarge: GoogleFonts.poppins(fontWeight: FontWeight.w900, color: textPrimary),
-        headlineMedium: GoogleFonts.poppins(fontWeight: FontWeight.w800, color: textPrimary),
-        titleLarge: GoogleFonts.poppins(fontWeight: FontWeight.w700, color: textPrimary),
+        displayLarge: GoogleFonts.poppins(
+            fontWeight: FontWeight.w900, color: textPrimary),
+        headlineMedium: GoogleFonts.poppins(
+            fontWeight: FontWeight.w800, color: textPrimary),
+        titleLarge: GoogleFonts.poppins(
+            fontWeight: FontWeight.w700, color: textPrimary),
         bodyLarge: GoogleFonts.poppins(color: textPrimary),
       ),
       appBarTheme: const AppBarTheme(
@@ -65,5 +67,6 @@ class AppTheme {
     );
   }
 
-  static ThemeData get darkTheme => lightTheme; // For now, keep it simple or implement dark mode
+  static ThemeData get darkTheme =>
+      lightTheme; // For now, keep it simple or implement dark mode
 }

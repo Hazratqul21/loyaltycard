@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Tashqi platformalar (Uzum, Olcha, Yandex Go) bilan integratsiya mocki.
 /// ==========================================================================
+library;
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -33,7 +34,7 @@ class ExternalIntegrationService {
   Future<ExternalReward> simulateUzumPurchase(int amount) async {
     await Future.delayed(const Duration(seconds: 1));
     final points = (amount * 0.02).floor(); // 2% cashback
-    
+
     final reward = ExternalReward(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       platformName: 'Uzum Market',
@@ -51,7 +52,7 @@ class ExternalIntegrationService {
   Future<ExternalReward> simulateYandexRide(int amount) async {
     await Future.delayed(const Duration(milliseconds: 800));
     final points = (amount * 0.05).floor(); // 5% cashback
-    
+
     final reward = ExternalReward(
       id: DateTime.now().millisecondsSinceEpoch.toString(),
       platformName: 'Yandex Go',
@@ -66,4 +67,5 @@ class ExternalIntegrationService {
   }
 }
 
-final externalIntegrationServiceProvider = Provider((ref) => ExternalIntegrationService());
+final externalIntegrationServiceProvider =
+    Provider((ref) => ExternalIntegrationService());

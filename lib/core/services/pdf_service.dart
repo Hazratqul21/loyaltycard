@@ -3,9 +3,8 @@
 /// ==========================================================================
 /// Tranzaksiyalar tarixini PDF formatida eksport qilish xizmati.
 /// ==========================================================================
+library;
 
-import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:pdf/pdf.dart';
 import 'package:pdf/widgets.dart' as pw;
 import 'package:printing/printing.dart';
@@ -22,7 +21,7 @@ class PdfService {
   }) async {
     final pdf = pw.Document();
 
-    // Fontlarni yuklash (Uzbek lotin uchun standart fontlar yetarli bo'lishi mumkin, 
+    // Fontlarni yuklash (Uzbek lotin uchun standart fontlar yetarli bo'lishi mumkin,
     // lekin maxsus belgilar uchun font kerak bo'lsa shu yerda yuklanadi)
     // final font = await PdfGoogleFonts.nunitoExtraLight();
 
@@ -43,7 +42,8 @@ class PdfService {
 
     await Printing.layoutPdf(
       onLayout: (PdfPageFormat format) async => pdf.save(),
-      name: 'LoyaltyCard_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
+      name:
+          'LoyaltyCard_Report_${DateFormat('yyyyMMdd').format(DateTime.now())}.pdf',
     );
   }
 
@@ -94,14 +94,15 @@ class PdfService {
 
     return pw.Container(
       padding: const pw.EdgeInsets.all(10),
-      decoration: pw.BoxDecoration(
+      decoration: const pw.BoxDecoration(
         color: PdfColors.grey100,
-        borderRadius: const pw.BorderRadius.all(pw.Radius.circular(8)),
+        borderRadius: pw.BorderRadius.all(pw.Radius.circular(8)),
       ),
       child: pw.Row(
         mainAxisAlignment: pw.MainAxisAlignment.spaceAround,
         children: [
-          _buildSummaryItem('Jami tranzaksiyalar', transactions.length.toString()),
+          _buildSummaryItem(
+              'Jami tranzaksiyalar', transactions.length.toString()),
           _buildSummaryItem('Yig\'ilgan ballar', '+$totalEarned'),
           _buildSummaryItem('Sarflangan ballar', '-$totalSpent'),
         ],
@@ -112,7 +113,8 @@ class PdfService {
   pw.Widget _buildSummaryItem(String label, String value) {
     return pw.Column(
       children: [
-        pw.Text(label, style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
+        pw.Text(label,
+            style: const pw.TextStyle(fontSize: 10, color: PdfColors.grey700)),
         pw.SizedBox(height: 4),
         pw.Text(value, style: pw.TextStyle(fontWeight: pw.FontWeight.bold)),
       ],
@@ -137,7 +139,8 @@ class PdfService {
       headers: headers,
       data: data,
       border: null,
-      headerStyle: pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
+      headerStyle:
+          pw.TextStyle(fontWeight: pw.FontWeight.bold, color: PdfColors.white),
       headerDecoration: const pw.BoxDecoration(color: PdfColors.deepPurple),
       cellHeight: 30,
       cellAlignments: {

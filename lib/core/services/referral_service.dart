@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Takliflar tizimi xizmati (Referral System).
 /// ==========================================================================
+library;
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
@@ -21,7 +22,7 @@ class ReferralService {
         'LoyaltyCard ilovasidan foydalaning va bonus ballarga ega bo\'ling! '
         'Mening taklif kodim: ${user.referralCode} \n\n'
         'Ilovani yuklab olish: https://loyaltycard.uz/download';
-    
+
     await Share.share(text, subject: 'LoyaltyCard Taklif Kodi');
   }
 
@@ -43,10 +44,13 @@ class ReferralService {
       final referrerDoc = query.docs.first;
       final referrerId = referrerDoc.id;
 
-      if (referrerId == currentUserId) return false; // O'ziga o'zi referral bo'lolmaydi
+      if (referrerId == currentUserId) {
+        return false; // O'ziga o'zi referral bo'lolmaydi
+      }
 
       // 2. Bir marta ishlatilganini tekshirish (current user da referredBy bo'sh bo'lishi kerak)
-      final userDoc = await _firestore.collection('users').doc(currentUserId).get();
+      final userDoc =
+          await _firestore.collection('users').doc(currentUserId).get();
       if (userDoc.exists && userDoc.data()?['referredBy'] != null) {
         return false; // Allaqachon ishlatilgan
       }

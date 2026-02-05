@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// Sovg'alar do'koni sahifasi.
 /// ==========================================================================
+library;
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -14,7 +15,6 @@ import '../../../core/utils/extensions.dart';
 import '../../../domain/entities/reward.dart';
 import '../../providers/cards_provider.dart';
 import '../../widgets/glassmorphic_card.dart';
-import '../../widgets/gradient_button.dart';
 
 /// Sovg'alar ekrani
 class RewardsScreen extends ConsumerWidget {
@@ -387,15 +387,15 @@ class RewardsScreen extends ConsumerWidget {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(AppSizes.radiusLG),
         ),
-        title: Row(
+        title: const Row(
           children: [
-            const FaIcon(
+            FaIcon(
               FontAwesomeIcons.gift,
               color: AppColors.primaryColor,
               size: 24,
             ),
-            const SizedBox(width: AppSizes.paddingSM),
-            const Text('Sovg\'ani olish'),
+            SizedBox(width: AppSizes.paddingSM),
+            Text('Sovg\'ani olish'),
           ],
         ),
         content: Column(

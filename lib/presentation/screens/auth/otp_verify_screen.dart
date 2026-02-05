@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// SMS kodni tasdiqlash ekrani.
 /// ==========================================================================
+library;
 
 import 'dart:async';
 import 'package:flutter/material.dart';
@@ -85,7 +86,7 @@ class _OtpVerifyScreenState extends ConsumerState<OtpVerifyScreen> {
 
     return Scaffold(
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,

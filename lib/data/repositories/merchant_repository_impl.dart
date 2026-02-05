@@ -3,6 +3,7 @@
 /// ==========================================================================
 /// MerchantRepository ning aniq implementatsiyasi.
 /// ==========================================================================
+library;
 
 import '../../domain/entities/transaction.dart';
 import '../../domain/repositories/merchant_repository.dart';
